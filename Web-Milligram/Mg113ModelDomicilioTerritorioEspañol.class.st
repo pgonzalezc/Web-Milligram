@@ -216,7 +216,7 @@ Mg113ModelDomicilioTerritorioEspañol >> printOn: aStream [
 		print: planta.
 	aStream
 		nextPutAll: ' complement: ';
-		print: complement.
+		print: complemento.
 	aStream
 		nextPutAll: ' poblacion: ';
 		print: poblacion.

@@ -1,6 +1,9 @@
 Class {
 	#name : 'MgViewBase',
 	#superclass : 'WAComponent',
+	#instVars : [
+		'errors'
+	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
 	#tag : 'View'
@@ -30,6 +33,19 @@ MgViewBase class >> resetLoggers [
 	TinyLogger default removeAllLoggers
 ]
 
+{ #category : 'initialization' }
+MgViewBase >> deleteErrors [
+
+	errors removeAll.
+	errors := nil
+]
+
+{ #category : 'accessing' }
+MgViewBase >> errors [
+
+	^ errors ifNil: [ errors := OrderedCollection new ]
+]
+
 { #category : 'as yet unclassified' }
 MgViewBase >> milligramCssLibs [
 
@@ -51,10 +67,78 @@ MgViewBase >> ppImp: unImporte [
 ]
 
 { #category : 'rendering' }
+MgViewBase >> renderCabeceraErroresOn: html [
+
+	html div
+		class: 'row';
+		with: [
+				html div
+					class: 'column';
+					with: [ html strong id: 'title-cabecera-errores'; with: 'Corrija los siguientes errores:' ].
+				html div
+					class: 'column';
+					with: [
+							html div class: 'float-right'; with: [ 
+							html anchor
+								class: 'button button-clear';
+								style: 'font-size: larger; margin: 0; padding: 0';
+								onClick: (html jQuery id: 'error-container') hide;
+								with: 'X' ] ] ]
+]
+
+{ #category : 'rendering' }
+MgViewBase >> renderErrorsOn: html [
+
+	errors ifNil: [ ^ self ].
+	html div
+		id: 'error-container';
+		class: 'error-container';
+		with: [
+				self renderCabeceraErroresOn: html.
+				html unorderedList
+					id: 'lista-errores';
+					class: 'lista-errores';
+					with: [
+							errors do: [ :each |
+										html listItem: [
+													html span
+														class: 'error-text';
+														with: [ html text: each descripcion ].
+													html space.
+													self renderLinkToWidget: each widgetId on: html ] ] ] ].
+	errors removeAll.
+]
+
+{ #category : 'rendering' }
+MgViewBase >> renderLinkToWidget: aWidgetId on: html [
+
+	html anchor
+		url: 'javascript:void(0);';
+		onClick: (html jQuery id: aWidgetId) triggerSelect scrollTop;
+		with: [
+				html image
+					url: '/static-files/img/external-link-symbolic.svg';
+					width: 13;
+					height: 13 ]
+]
+
+{ #category : 'rendering' }
 MgViewBase >> renderWithMandatoryMark: aString on: html [
 
 	html span style: 'color: red'; with: ' * '.
 	html text: aString
+]
+
+{ #category : 'initialization' }
+MgViewBase >> setError: aString [
+
+	self errors add: (MgError descripcion: aString)
+]
+
+{ #category : 'initialization' }
+MgViewBase >> setError: aString at: aWidgetId [
+
+	self errors add: (MgError widgetId: aWidgetId descripcion: aString)
 ]
 
 { #category : 'updating' }
@@ -65,7 +149,7 @@ MgViewBase >> updateRoot: aHtmlRoot [
 	aHtmlRoot meta
 		name: 'viewport';
 		content: 'width=device-width, initial-scale=1.0'.
-	aHtmlRoot stylesheet url: '/static-files/css/default.css'.
 	self milligramCssLibs do: [ :each | aHtmlRoot stylesheet url: each ].
-	self milligramJsLibs do: [ :each | aHtmlRoot javascript url: each ]
+	self milligramJsLibs do: [ :each | aHtmlRoot javascript url: each ].
+	aHtmlRoot stylesheet url: '/static-files/css/default.css'.
 ]

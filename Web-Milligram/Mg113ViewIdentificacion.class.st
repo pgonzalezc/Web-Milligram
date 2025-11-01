@@ -17,20 +17,6 @@ Mg113ViewIdentificacion >> initialize [
 ]
 
 { #category : 'rendering' }
-Mg113ViewIdentificacion >> renderErroresOn: html [
-
-	html blockquote
-		id: 'errores';
-		with: [
-				html unorderedList: [
-							model errores do: [ :each |
-									html listItem: [ each renderAsAnchorOn: html ] ] ] ].
-
-	"Borramos los errores una vez mostrados."
-	model errores removeAll
-]
-
-{ #category : 'rendering' }
 Mg113ViewIdentificacion >> renderFieldApellidosOn: html [
 
 	html div
@@ -52,10 +38,10 @@ Mg113ViewIdentificacion >> renderFieldNifOn: html [
 		with: [
 				html label
 					for: 'nif';
-					with: [
-							self renderWithMandatoryMark: 'N.I.F.' on: html ].
+					with: [ self renderWithMandatoryMark: 'N.I.F.' on: html ].
 				html textInput
 					id: 'nif';
+					maxLength: 9;
 					on: #nif of: model ]
 ]
 

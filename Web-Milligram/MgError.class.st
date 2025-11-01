@@ -11,11 +11,31 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+MgError class >> descripcion: aString [
+
+	^ self basicNew descripcion: aString
+]
+
+{ #category : 'as yet unclassified' }
+MgError class >> descripcion: aString widgetId: aWidgetId [
+
+		^ self basicNew
+		  setWidgetId: aWidgetId;
+		  setDescripcion: aString
+]
+
+{ #category : 'as yet unclassified' }
 MgError class >> widgetId: aSymbol descripcion: aString [
 
 	^ self basicNew
 		  setWidgetId: aSymbol;
 		  setDescripcion: aString
+]
+
+{ #category : 'accessing' }
+MgError >> descripcion [
+
+	^ descripcion
 ]
 
 { #category : 'printing' }
@@ -31,29 +51,20 @@ MgError >> printOn: aStream [
 		print: widgetId
 ]
 
-{ #category : 'rendering' }
-MgError >> renderAsAnchorOn: html [
-
-	html anchor
-		url: '#';
-		onClick: (html jQuery id: widgetId) triggerSelect;
-		with: [
-				html image
-					height: 15;
-					width: 15;
-					url: '/static-files/img/go-hand.png'.
-				html space.
-				html text: descripcion ]
-]
-
-{ #category : 'initialization' }
+{ #category : 'private' }
 MgError >> setDescripcion: aString [
 
 	descripcion := aString
 ]
 
-{ #category : 'initialization' }
+{ #category : 'private' }
 MgError >> setWidgetId: aSymbol [
 
 	widgetId := aSymbol
+]
+
+{ #category : 'accessing' }
+MgError >> widgetId [
+
+	^ widgetId
 ]

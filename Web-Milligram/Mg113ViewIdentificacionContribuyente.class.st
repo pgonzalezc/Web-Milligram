@@ -61,31 +61,15 @@ Mg113ViewIdentificacionContribuyente >> paises [
 ]
 
 { #category : 'rendering' }
-Mg113ViewIdentificacionContribuyente >> renderButtonsOn: html [
-
-	html div
-		class: 'float-right';
-		with: [
-				html anchor
-					class: 'button';
-					on: #cancelar of: self.
-				html button
-					class: 'button button-outline';
-					on: #enviar of: self ]
-]
-
-{ #category : 'rendering' }
 Mg113ViewIdentificacionContribuyente >> renderContentOn: html [
 
-	html form: [
-			html div
-				class: 'container';
-				with: [
-						html heading level4 with: 'Contribuyente'.
-						model errores ifNotEmpty: [ self renderErroresOn: html ].
-						self renderIdentificacionContribuyenteOn: html.
-						self renderDomicilioEnPaisResidenciaOn: html.
-						self renderButtonsOn: html ] ]
+	html div
+		class: 'container';
+		with: [
+				html heading level4 with: 'Contribuyente'.
+				self renderIdentificacionContribuyenteOn: html.
+				self renderDomicilioEnPaisResidenciaOn: html
+				"self renderButtonsOn: html" ]
 ]
 
 { #category : 'rendering' }
@@ -211,4 +195,24 @@ Mg113ViewIdentificacionContribuyente >> renderPaisOn: html [
 							html textInput
 								id: 'fax';
 								on: #fax of: model domicilio ] ]
+]
+
+{ #category : 'as yet unclassified' }
+Mg113ViewIdentificacionContribuyente >> siguiente [
+
+	(String streamContents: [ :stream |
+		 stream nextPutAll: model asString ]) record.
+	model errores ifNotEmpty: [
+			('{1}#{2} Errores detectados en los datos del contribuyente' format:
+				 { self class name . 'enviar' }) record.
+			model errores do: [ :each | each record ].
+			^ self ].
+	(String streamContents: [ :stream |
+			 stream nextPutAll:
+				 ('{1}#{2} Validaciones del modelo pasadas. Se procede a responder'
+	format: {
+			self class name.
+			'enviar' })])
+		record.
+	self answer: model
 ]

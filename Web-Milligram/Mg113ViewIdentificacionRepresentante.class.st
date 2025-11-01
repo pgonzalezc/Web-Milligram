@@ -22,21 +22,34 @@ Mg113ViewIdentificacionRepresentante class >> initialize [
 { #category : 'initialization' }
 Mg113ViewIdentificacionRepresentante >> initialize [
 
+	| provincia municipio poblacion |
 	super initialize.
-	model := Mg113ModelRepresentante new
+	model := Mg113ModelRepresentante new.
+	"Inicializaciones del modelo"
+	provincia := MgConstantes listaProvincias at: 28.
+	municipio := (MgConstantes listaMunicipiosProvincia:
+		              provincia codigoProvincia) first.
+	poblacion := (MgConstantes listaPoblacionesMunicipio:
+		              municipio codigoIneMunicipio) first.
+	model domicilio provincia: provincia.
+	model domicilio municipio: municipio.
+	model domicilio poblacion: poblacion.
+	model domicilio tipoVia: MgConstantes tipoViaCalle
 ]
 
 { #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderContentOn: html [
 
-	html form: [
-			html div
-				class: 'container';
-				with: [
-						html heading level4 with: 'Representante del contribuyente'.
-						model errores ifNotEmpty: [ self renderErroresOn: html ].
-						self renderIdentificacionContribuyenteOn: html.
-						self renderDomicilioEnTerritorioEspañolOn: html ] ]
+	html div
+		class: 'container';
+		with: [
+				html heading level4 with: 'Representante del contribuyente'.
+				model errores ifNotEmpty: [
+							self errors addAll: model errores.
+							model errores removeAll.
+							self renderErrorsOn: html ].
+				self renderIdentificacionContribuyenteOn: html.
+				self renderDomicilioEnTerritorioEspañolOn: html ]
 ]
 
 { #category : 'rendering' }
@@ -82,6 +95,19 @@ Mg113ViewIdentificacionRepresentante >> renderFieldCalificadorNumeroOn: html [
 ]
 
 { #category : 'rendering' }
+Mg113ViewIdentificacionRepresentante >> renderFieldCodigoPostalOn: html [
+
+	html label
+		for: 'codigo-postal';
+		with: [ self renderWithMandatoryMark: 'Código postal' on: html ].
+	html textInput
+		id: 'codigo-postal';
+		maxLength: 5;
+		value: model domicilio codigoPostal;
+		callback: [ :value | model domicilio codigoPostal: value ]
+]
+
+{ #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderFieldComplementoOn: html [
 
 	html label for: #complemento; with: 'Datos complemento del domicilio'.
@@ -96,11 +122,34 @@ Mg113ViewIdentificacionRepresentante >> renderFieldEscaleraOn: html [
 ]
 
 { #category : 'rendering' }
+Mg113ViewIdentificacionRepresentante >> renderFieldMunicipioOn: html [
+
+	| provincia municipios |
+	provincia := model domicilio provincia.
+	municipios := MgConstantes listaMunicipiosProvincia:
+		              provincia codigoProvincia.
+	html label
+		for: 'municipio';
+		with: [ self renderWithMandatoryMark: 'Municipio'  on: html].
+	html select
+		id: 'municipio';
+		list: municipios;
+		labels: [ :municipio | municipio nombreMunicipio ];
+		onChange: (html jQuery ajax
+				 callback: [ :value | self trataNuevoMunicipio: (municipios at: value asInteger) ]
+				 value: html jQuery this value;
+				 script: [ :s |
+						 s << (html jQuery id: 'domicilio-fila-4') load html: [ :r |
+								 self renderFieldsDomicilioFila4On: r ] ]);
+		on: #municipio of: model domicilio
+]
+
+{ #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderFieldNombreViaOn: html [
 
 	html label
 		for: #nombreVia;
-		with: 'Nombre de la vía pública'.
+		with: [ self renderWithMandatoryMark: 'Nombre de la vía pública' on: html ].
 	html textInput
 		id: #nombreVia;
 		on: #nombreVia of: model domicilio
@@ -111,7 +160,7 @@ Mg113ViewIdentificacionRepresentante >> renderFieldNumeroOn: html [
 
 	html label
 		for: #numero;
-		with: 'Número'.
+		with: [ self renderWithMandatoryMark: 'Número' on: html ].
 	html textInput
 		id: #numero;
 		on: #numero of: model domicilio
@@ -131,13 +180,23 @@ Mg113ViewIdentificacionRepresentante >> renderFieldPlantaOn: html [
 { #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderFieldPoblacionOn: html [
 
+	| poblaciones municipio |
+	municipio := model domicilio municipio.
+	poblaciones := MgConstantes listaPoblacionesMunicipio:
+		               municipio codigoIneMunicipio.
 	html label
 		for: #poblacion;
 		with: [
 				html text: 'Localidad/Poblacion'.
 				html small: '(si es distinta del municipio)' ].
-	html textInput
+	html select
 		id: #poblacion;
+		list: poblaciones;
+		labels: [ :poblacion | poblacion nombrePoblacion ];
+		onChange: (html jQuery ajax
+				 callback: [ :value |
+					 model domicilio poblacion: (poblaciones at: value asInteger) ]
+				 value: html jQuery this value);
 		on: #poblacion of: model domicilio
 ]
 
@@ -149,11 +208,46 @@ Mg113ViewIdentificacionRepresentante >> renderFieldPortalOn: html [
 ]
 
 { #category : 'rendering' }
+Mg113ViewIdentificacionRepresentante >> renderFieldProvinciaOn: html [
+
+	html label
+		for: 'provincia';
+		with: [ self renderWithMandatoryMark: 'Provincia'  on: html ].
+	html select
+		id: 'provincia';
+		list: MgConstantes listaProvincias;
+		labels: [ :provincia | provincia nombreProvincia ];
+		onChange: (html jQuery ajax
+				 callback: [ :value |
+						 | provincia municipio poblacion |
+						 provincia := MgConstantes listaProvincias at: value asInteger.
+						 municipio := (MgConstantes listaMunicipiosProvincia:
+								               provincia codigoProvincia) first.
+						 poblacion := (MgConstantes listaPoblacionesMunicipio:
+								               municipio codigoIneMunicipio) first.
+						 model domicilio provincia: provincia.
+						 model domicilio municipio: municipio.
+						 model domicilio poblacion: poblacion ]
+				 value: html jQuery this value;
+				 script: [ :s |
+						 s << (s jQuery id: 'domicilio-fila-4') load html: [ :r |
+								 self renderFieldsDomicilioFila4On: r ] ]);
+		on: #provincia of: model domicilio
+]
+
+{ #category : 'rendering' }
+Mg113ViewIdentificacionRepresentante >> renderFieldTelefonoOn: html [
+
+	html label for: 'telefono'; with: 'Teléfono'.
+	html textInput id: 'telefono'; maxLength: 9; on: #telefono of: model domicilio.
+]
+
+{ #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderFieldTipoNumeracionOn: html [
 
 	html label
 		for: #tipoNumeracion;
-		with: 'Tipo Núm.'.
+		with: [ self renderWithMandatoryMark: 'Tipo Núm.' on: html ].
 	html select
 		id: #tipoNumeracion;
 		beOptional;
@@ -166,14 +260,15 @@ Mg113ViewIdentificacionRepresentante >> renderFieldTipoNumeracionOn: html [
 { #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderFieldTipoViaOn: html [
 
+	| tiposVias |
+	tiposVias := MgConstantes listaTiposVias.
 	html label
 		for: #tipoVia;
-		with: 'Tipo de via'.
+		with: [ self renderWithMandatoryMark: 'Tipo de vía' on: html ].
 	html select
-		list: MgConstantes listaTiposVias;
-		beOptional;
-		optionalLabel: '-- --';
-		labels: [ :item | item last ];
+		list: tiposVias;
+		selected: model domicilio tipoVia;
+		labels: [ :item | item nombre ];
 		on: #tipoVia of: model domicilio
 ]
 
@@ -227,23 +322,39 @@ Mg113ViewIdentificacionRepresentante >> renderFieldsDomicilioFila3On: html [
 		class: 'row';
 		with: [
 				html div
-					class: 'column column-60';
+					class: 'column';
 					with: [ self renderFieldComplementoOn: html ].
 				html div
-					class: 'column';
-					with: [ self renderFieldPoblacionOn: html ] ]
+					class: 'column column-20';
+					with: [ self renderFieldCodigoPostalOn: html ] ]
 ]
 
 { #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderFieldsDomicilioFila4On: html [
 
-	
+	html div
+		id: 'domicilio-fila-4';
+		class: 'row';
+		with: [
+				html div
+					class: 'column';
+					with: [ self renderFieldProvinciaOn: html ].
+				html div
+					class: 'column';
+					with: [ self renderFieldMunicipioOn: html ].
+				html div class: 'column'; with: [ self renderFieldPoblacionOn: html ]]
 ]
 
 { #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderFieldsDomicilioFila5On: html [
 
-	
+	html div
+		id: 'domicilio-fila-4';
+		class: 'row';
+		with: [
+				html div
+					class: 'column column-20';
+					with: [ self renderFieldTelefonoOn: html ] ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -274,4 +385,14 @@ Mg113ViewIdentificacionRepresentante >> toggleNumeracionSt [
 								     apply: { JSStream this };
 								     call: 'prop' withArguments: #( 'disabled' false ));
 						    yourself))
+]
+
+{ #category : 'as yet unclassified' }
+Mg113ViewIdentificacionRepresentante >> trataNuevoMunicipio: unMunicipio [
+
+	| poblacion |
+	poblacion := (MgConstantes listaPoblacionesMunicipio:
+		              unMunicipio codigoIneMunicipio) first.
+	model domicilio municipio: unMunicipio.
+	model domicilio poblacion: poblacion
 ]

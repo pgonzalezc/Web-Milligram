@@ -41,17 +41,21 @@ Mg113ViewEditComunicacionVariacion >> renderContentOn: html [
 		class: 'container';
 		with: [
 				html heading
-					level: 5;
+					level: 4;
+					with: 'Nueva comunicación de variación de circunstancias'.
+				html heading
+					level: 6;
 					with: 'Introduzca los siguientes datos:'.
-				html form with: [
-						self renderFormFieldsOn: html.
-						html div class: 'float-right'; with: [
-								html button
-									class: 'button button-outline';
-									on: #cancelar of: self.
-								html button
-									class: 'button';
-									on: #hecho of: self ] ] ]
+				self renderFormFieldsOn: html.
+				html div
+					class: 'float-right';
+					with: [
+							html button
+								class: 'button button-outline';
+								on: #cancelar of: self.
+							html button
+								class: 'button';
+								on: #hecho of: self ] ]
 ]
 
 { #category : 'rendering' }

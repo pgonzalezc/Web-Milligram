@@ -68,6 +68,7 @@ MgViewBreadcrumbs >> initialize [
 { #category : 'accessing' }
 MgViewBreadcrumbs >> next [
 
+	"Siguiente paso del workflow"
 	views inspect.
 	idx := idx + 1.
 	
@@ -76,6 +77,7 @@ MgViewBreadcrumbs >> next [
 { #category : 'accessing' }
 MgViewBreadcrumbs >> previous [
 
+	"previo paso del workflow"
 	views inspect.
 	idx := idx - 1
 ]

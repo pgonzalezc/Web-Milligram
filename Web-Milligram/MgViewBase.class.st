@@ -1,9 +1,6 @@
 Class {
 	#name : 'MgViewBase',
 	#superclass : 'WAComponent',
-	#instVars : [
-		'errors'
-	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
 	#tag : 'View'
@@ -33,17 +30,10 @@ MgViewBase class >> resetLoggers [
 	TinyLogger default removeAllLoggers
 ]
 
-{ #category : 'initialization' }
-MgViewBase >> deleteErrors [
-
-	errors removeAll.
-	errors := nil
-]
-
 { #category : 'accessing' }
 MgViewBase >> errors [
 
-	^ errors ifNil: [ errors := OrderedCollection new ]
+	self subclassResponsibility 
 ]
 
 { #category : 'as yet unclassified' }
@@ -89,7 +79,7 @@ MgViewBase >> renderCabeceraErroresOn: html [
 { #category : 'rendering' }
 MgViewBase >> renderErrorsOn: html [
 
-	errors ifNil: [ ^ self ].
+	self errors ifNil: [ ^ self ].
 	html div
 		id: 'error-container';
 		class: 'error-container';
@@ -99,14 +89,14 @@ MgViewBase >> renderErrorsOn: html [
 					id: 'lista-errores';
 					class: 'lista-errores';
 					with: [
-							errors do: [ :each |
+							self errors do: [ :each |
 										html listItem: [
 													html span
 														class: 'error-text';
 														with: [ html text: each descripcion ].
 													html space.
 													self renderLinkToWidget: each widgetId on: html ] ] ] ].
-	errors removeAll.
+	self errors removeAll.
 ]
 
 { #category : 'rendering' }
@@ -127,18 +117,6 @@ MgViewBase >> renderWithMandatoryMark: aString on: html [
 
 	html span style: 'color: red'; with: ' * '.
 	html text: aString
-]
-
-{ #category : 'initialization' }
-MgViewBase >> setError: aString [
-
-	self errors add: (MgError descripcion: aString)
-]
-
-{ #category : 'initialization' }
-MgViewBase >> setError: aString at: aWidgetId [
-
-	self errors add: (MgError widgetId: aWidgetId descripcion: aString)
 ]
 
 { #category : 'updating' }

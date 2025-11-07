@@ -45,9 +45,12 @@ Mg113ModelIdentificacion >> domicilio [
 { #category : 'accessing' }
 Mg113ModelIdentificacion >> errores [
 
-	errores addAll: self domicilio errores.
+	| errors |
+	errors := errores copy.
+	errors addAll: self domicilio errores.
 	domicilio errores removeAll.
-	^ errores
+	errores removeAll.
+	^ errors
 ]
 
 { #category : 'initialization' }

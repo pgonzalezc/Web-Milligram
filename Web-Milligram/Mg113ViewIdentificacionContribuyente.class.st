@@ -47,6 +47,12 @@ Mg113ViewIdentificacionContribuyente >> enviar [
 	self answer: model
 ]
 
+{ #category : 'accessing' }
+Mg113ViewIdentificacionContribuyente >> errors [
+
+	^ model errores
+]
+
 { #category : 'initialization' }
 Mg113ViewIdentificacionContribuyente >> initialize [
 

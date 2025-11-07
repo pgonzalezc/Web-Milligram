@@ -9,6 +9,12 @@ Class {
 	#tag : 'View'
 }
 
+{ #category : 'accessing' }
+Mg113ViewIdentificacion >> errors [
+
+	self subclassResponsibility 
+]
+
 { #category : 'initialization' }
 Mg113ViewIdentificacion >> initialize [
 

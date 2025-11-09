@@ -26,7 +26,7 @@ MgSSLCertInfo class >> fromHeaders: aDictionary [
 		setSSLData: aDictionary
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgSSLCertInfo >> emissor [
 
 	emissor ifNil: [
@@ -63,7 +63,6 @@ MgSSLCertInfo >> setSSLData: aDictionary [
 { #category : 'accessing' }
 MgSSLCertInfo >> subject [
 
-	self halt.
 	subject ifNil: [
 			| dnStr |
 			dnStr := sslData at: 'ssl_client_s_dn' ifAbsent: [ '' ].
@@ -77,13 +76,13 @@ MgSSLCertInfo >> subject [
 	^ subject
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgSSLCertInfo >> validFrom [
 
 	^ sslData at: 'ssl_client_v_start' ifAbsent: [ '' ].
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgSSLCertInfo >> validUntil [
 
 	^ sslData at: 'ssl_client_v_end' ifAbsent: [ '' ]

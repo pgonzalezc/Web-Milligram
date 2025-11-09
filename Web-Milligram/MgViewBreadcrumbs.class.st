@@ -3,7 +3,8 @@ Class {
 	#superclass : 'WAComponent',
 	#instVars : [
 		'panels',
-		'idx'
+		'idx',
+		'errors'
 	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
@@ -173,6 +174,26 @@ MgViewBreadcrumbs >> renderButtonPreviousOn: html [
 ]
 
 { #category : 'rendering' }
+MgViewBreadcrumbs >> renderCabeceraErroresOn: html [
+
+	html div
+		class: 'row';
+		with: [
+				html div
+					class: 'column';
+					with: [ html strong id: 'title-cabecera-errores'; with: 'Corrija los siguientes errores:' ].
+				html div
+					class: 'column';
+					with: [
+							html div class: 'float-right'; with: [ 
+							html anchor
+								class: 'button button-clear';
+								style: 'font-size: larger; margin: 0; padding: 0';
+								onClick: (html jQuery id: 'error-container') hide;
+								with: 'X' ] ] ]
+]
+
+{ #category : 'rendering' }
 MgViewBreadcrumbs >> renderContentOn: html [
 
 	self renderAuthenticationUserOn: html.
@@ -181,6 +202,7 @@ MgViewBreadcrumbs >> renderContentOn: html [
 				id: 'breadcrumb';
 				class: 'breadcrumb flat';
 				with: [ self renderBreadcrumbsOn: html ].
+			self renderErrorsOn: html.
 			html div
 				id: 'view';
 				class: 'view';
@@ -189,6 +211,43 @@ MgViewBreadcrumbs >> renderContentOn: html [
 				id: 'botonera';
 				class: 'row';
 				with: [ self renderBotoneraOn: html ] ]
+]
+
+{ #category : 'rendering' }
+MgViewBreadcrumbs >> renderErrorsOn: html [
+
+	self halt.
+	(errors isNil or: [errors isEmpty]) ifTrue: [ ^ self ].
+	html div
+		id: 'error-container';
+		class: 'error-container';
+		with: [
+				self renderCabeceraErroresOn: html.
+				html unorderedList
+					id: 'lista-errores';
+					class: 'lista-errores';
+					with: [
+							errors do: [ :each |
+										html listItem: [
+													html span
+														class: 'error-text';
+														with: [ html text: each descripcion ].
+													html space.
+													self renderLinkToWidget: each widgetId on: html ] ] ] ].
+	errors removeAll
+]
+
+{ #category : 'rendering' }
+MgViewBreadcrumbs >> renderLinkToWidget: aWidgetId on: html [
+
+	html anchor
+		url: 'javascript:void(0);';
+		onClick: (html jQuery id: aWidgetId) triggerSelect scrollTop;
+		with: [
+				html image
+					url: '/static-files/img/external-link-symbolic.svg';
+					width: 13;
+					height: 13 ]
 ]
 
 { #category : 'hooks' }

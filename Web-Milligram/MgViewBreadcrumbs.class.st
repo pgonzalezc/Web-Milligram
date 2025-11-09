@@ -81,18 +81,16 @@ MgViewBreadcrumbs >> initialize [
 				          view: (Mg113ViewFirmaYEnvio new modelo: '113'))
 ]
 
-{ #category : 'accessing' }
+{ #category : 'actions' }
 MgViewBreadcrumbs >> next [
-	"Siguiente paso del workflow"
+	"Pasamos al siguiente paso del workflow, si no hay errores"
 
-	| errors |
-	panels inspect.
-	(errors := (panels at: idx) view errors)
-		          ifNotEmpty: [ errors inspect ]
-		          ifEmpty: [ idx := idx + 1 ]
+	self halt.
+	errors := (panels at: idx) view errors.
+	errors ifEmpty: [ idx := idx + 1 ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'actions' }
 MgViewBreadcrumbs >> previous [
 
 	"previo paso del workflow"

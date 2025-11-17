@@ -100,6 +100,20 @@ MgViewBase >> renderErrorsOn: html [
 ]
 
 { #category : 'rendering' }
+MgViewBase >> renderLinkToUrl: anUrl withText: aString on: html [
+
+	html emphasis: aString.
+	html space.
+	html anchor
+		url: anUrl;
+		with: [
+				html image
+					url: '/static-files/img/external-link-symbolic.svg';
+					width: 13;
+					height: 13 ]
+]
+
+{ #category : 'rendering' }
 MgViewBase >> renderLinkToWidget: aWidgetId on: html [
 
 	html anchor

@@ -27,14 +27,6 @@ MgViewBreadcrumbs class >> initialize [
   
 ]
 
-{ #category : 'accessing' }
-MgViewBreadcrumbs >> active: aBreadcrumbInfo [
-
-	^ aBreadcrumbInfo id = (panels at: idx) id
-		  ifTrue: [ 'active' ]
-		  ifFalse: [ '' ]
-]
-
 { #category : 'as yet unclassified' }
 MgViewBreadcrumbs >> children [
 
@@ -59,33 +51,40 @@ MgViewBreadcrumbs >> initialize [
 	super initialize.
 	idx := 1.
 	panels := OrderedCollection
-		         with: (MgBreadcrumbInfo
-				          withId: 'contribuyente'
-				          description: 'Contribuyente'
-				          view: Mg113ViewIdentificacionContribuyente new)
-		         with: (MgBreadcrumbInfo
-				          withId: 'representante'
-				          description: 'Representante'
-				          view: Mg113ViewIdentificacionRepresentante new)
-		         with: (MgBreadcrumbInfo
-				          withId: 'comunicacion-opcion'
-				          description: 'Comuniciación opción'
-				          view: Mg113ViewComunicacionOpcion new)
-		         with: (MgBreadcrumbInfo
-				          withId: 'comunicacion-variacion'
-				          description: 'Comunicación variación'
-				          view: Mg113ViewComunicacionVariacion new)
-		         with: (MgBreadcrumbInfo
-				          withId: 'firma-envio'
-				          description: 'Firma y Envío'
-				          view: (Mg113ViewFirmaYEnvio new modelo: '113'))
+		          with: (MgBreadcrumbInfo
+				           withId: 'model-info'
+				           description: 'Modelo 113'
+				           view: (MgViewModelBanner new
+						            setCode: '113';
+						            setDescription:
+							            #( 'Comunicación de datos relativos a las ganacias patrimoniales por cambio de residencia cuando se produzca a otro estado miembro de la Unión Europea o del Espacio Económico Europeo con efectivo intercambio de información tributaria'
+							               '(Artículo 95 bis de la ley de IRPF)' )))
+		          with: (MgBreadcrumbInfo
+				           withId: 'contribuyente'
+				           description: 'Contribuyente'
+				           view: Mg113ViewIdentificacionContribuyente new)
+		          with: (MgBreadcrumbInfo
+				           withId: 'representante'
+				           description: 'Representante'
+				           view: Mg113ViewIdentificacionRepresentante new)
+		          with: (MgBreadcrumbInfo
+				           withId: 'comunicacion-opcion'
+				           description: 'Comuniciación opción'
+				           view: Mg113ViewComunicacionOpcion new)
+		          with: (MgBreadcrumbInfo
+				           withId: 'comunicacion-variacion'
+				           description: 'Comunicación variación'
+				           view: Mg113ViewComunicacionVariacion new)
+		          with: (MgBreadcrumbInfo
+				           withId: 'firma-envio'
+				           description: 'Firma y Envío'
+				           view: (Mg113ViewFirmaYEnvio new modelo: '113'))
 ]
 
 { #category : 'actions' }
 MgViewBreadcrumbs >> next [
 	"Pasamos al siguiente paso del workflow, si no hay errores"
 
-	self halt.
 	errors := (panels at: idx) view errors.
 	errors ifEmpty: [ idx := idx + 1 ]
 ]
@@ -124,27 +123,38 @@ MgViewBreadcrumbs >> renderBotoneraOn: html [
 ]
 
 { #category : 'rendering' }
-MgViewBreadcrumbs >> renderBreadcrumbId: aBreadcrumbInfo on: html [
+MgViewBreadcrumbs >> renderBreadcrumbId: anInteger on: html [
+
+	| classValue |
+	classValue := anInteger = idx
+		              ifTrue: [ 'active' ]
+		              ifFalse: [ '' ].
 
 	html anchor
-		class: (self active: aBreadcrumbInfo);
-		id: aBreadcrumbInfo id;
+		class: classValue;
+		id: (panels at: anInteger) id;
 		url: 'javascript:void(0)';
 		onClick: (html jQuery ajax
-				 callback: [ :value | idx := (panels collect: [ :bcInfo | bcInfo id ]) indexOf: value  ]
+				 callback: [ :value |
+						 | panelsNames |
+						 panelsNames := panels collect: [ :bcInfo | bcInfo id ].
+						 idx := panelsNames indexOf: value ]
 				 value: (html jQuery this attributeAt: 'id');
 				 script: [ :s |
 						 s << (s jQuery id: 'breadcrumb') load html: [ :r |
 								 self renderBreadcrumbsOn: r ].
-						 s << (s jQuery id: 'view') load html: [ :r | r render: (panels at: idx) view ].
-						 s << (s jQuery id: 'botonera') load html: [ :r | self renderBotoneraOn: r  ] ]);
-		with: aBreadcrumbInfo descripcion capitalized.
+						 s << (s jQuery id: 'view') load html: [ :r |
+								 r render: (panels at: idx) view ].
+						 s << (s jQuery id: 'botonera') load html: [ :r |
+								 self renderBotoneraOn: r ] ]);
+		with: (panels at: anInteger) descripcion capitalized
 ]
 
 { #category : 'rendering' }
 MgViewBreadcrumbs >> renderBreadcrumbsOn: html [
 
-	panels do: [ :each | self renderBreadcrumbId: each on: html ]
+	panels doWithIndex: [ :each :index |
+		self renderBreadcrumbId: index on: html ]
 ]
 
 { #category : 'rendering' }
@@ -214,7 +224,6 @@ MgViewBreadcrumbs >> renderContentOn: html [
 { #category : 'rendering' }
 MgViewBreadcrumbs >> renderErrorsOn: html [
 
-	self halt.
 	(errors isNil or: [errors isEmpty]) ifTrue: [ ^ self ].
 	html div
 		id: 'error-container';
@@ -246,6 +255,18 @@ MgViewBreadcrumbs >> renderLinkToWidget: aWidgetId on: html [
 					url: '/static-files/img/external-link-symbolic.svg';
 					width: 13;
 					height: 13 ]
+]
+
+{ #category : 'rendering' }
+MgViewBreadcrumbs >> renderModelBannerOn: html [
+
+	html render: (MgViewModelBanner new
+			 setCode: '113';
+			 setDescription:
+				 #( 'Comunicación de datos relativos a las ganacias patrimoniales por cambio de residencia cuando se produzca a otro estado miembro de la Unión uropea o del Espacio Económico Europeo con efectivo intercambio de información tributaria'
+				    '(Artículo 95 bis de la ley de IRPF)' )).
+				
+	html break
 ]
 
 { #category : 'hooks' }

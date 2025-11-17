@@ -9,6 +9,12 @@ Class {
 	#tag : 'View'
 }
 
+{ #category : 'accessing' }
+Mg113ViewComunicacionOpcion >> errors [
+
+	^ OrderedCollection new
+]
+
 { #category : 'rendering' }
 Mg113ViewComunicacionOpcion >> renderContentOn: html [
 

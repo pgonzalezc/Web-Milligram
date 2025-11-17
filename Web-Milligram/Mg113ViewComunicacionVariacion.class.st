@@ -43,6 +43,12 @@ Mg113ViewComunicacionVariacion >> enviar [
 	Transcript show: model asString; cr
 ]
 
+{ #category : 'accessing' }
+Mg113ViewComunicacionVariacion >> errors [
+
+	^ OrderedCollection new
+]
+
 { #category : 'as yet unclassified' }
 Mg113ViewComunicacionVariacion >> headings [
 

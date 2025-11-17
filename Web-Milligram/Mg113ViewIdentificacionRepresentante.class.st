@@ -19,6 +19,16 @@ Mg113ViewIdentificacionRepresentante class >> initialize [
 	WAAdmin register: self asApplicationAt: '/milligram/representante'
 ]
 
+{ #category : 'accessing' }
+Mg113ViewIdentificacionRepresentante >> errors [
+
+	| errors |
+	
+	errors := model errores.
+	model errores removeAll.
+	^ errors
+]
+
 { #category : 'initialization' }
 Mg113ViewIdentificacionRepresentante >> initialize [
 
@@ -44,10 +54,6 @@ Mg113ViewIdentificacionRepresentante >> renderContentOn: html [
 		class: 'container';
 		with: [
 				html heading level4 with: 'Representante del contribuyente'.
-				model errores ifNotEmpty: [
-							self errors addAll: model errores.
-							model errores removeAll.
-							self renderErrorsOn: html ].
 				self renderIdentificacionContribuyenteOn: html.
 				self renderDomicilioEnTerritorioEspañolOn: html ]
 ]

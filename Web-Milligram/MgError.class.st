@@ -35,6 +35,7 @@ MgError class >> widgetId: aSymbol descripcion: aString [
 { #category : 'accessing' }
 MgError >> descripcion [
 
+	"   "
 	^ descripcion
 ]
 

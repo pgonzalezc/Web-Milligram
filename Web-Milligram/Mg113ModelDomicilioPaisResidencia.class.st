@@ -2,7 +2,6 @@ Class {
 	#name : 'Mg113ModelDomicilioPaisResidencia',
 	#superclass : 'Object',
 	#instVars : [
-		'errores',
 		'domicilio',
 		'complemento',
 		'poblacion',
@@ -33,10 +32,6 @@ Mg113ModelDomicilioPaisResidencia >> codigoPostal [
 { #category : 'accessing' }
 Mg113ModelDomicilioPaisResidencia >> codigoPostal: anObject [
 
-	(anObject isNil or: [ anObject isEmpty ]) ifTrue: [
-			errores add: (MgError
-					 widgetId: #codigoPostal
-					 descripcion: 'Código postal sin informar. Es obligatorio') ].
 	codigoPostal := anObject
 ]
 
@@ -61,10 +56,6 @@ Mg113ModelDomicilioPaisResidencia >> domicilio [
 { #category : 'accessing' }
 Mg113ModelDomicilioPaisResidencia >> domicilio: aString [
 
-	(aString isNil or: [ aString trim isEmpty ]) ifTrue: [
-			errores add: (MgError
-					 widgetId: #domicilio
-					 descripcion: 'Domicilio no informado. Es obligatorio') ].
 	domicilio := aString
 ]
 
@@ -77,17 +68,13 @@ Mg113ModelDomicilioPaisResidencia >> email [
 { #category : 'accessing' }
 Mg113ModelDomicilioPaisResidencia >> email: aString [
 
-	(aString isNil or: [aString trim isEmpty]) ifTrue: [ 
-		errores add: (MgError widgetId: #email descripcion: 'Email no informado. Es obligatorio' ) ].
-	(aString matchesRegex: '^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+$') ifFalse: [ 
-		errores add: (MgError widgetId: #email descripcion: 'Email incorrecto. No tiene un formato válido') ].
 	email := aString
 ]
 
 { #category : 'accessing' }
 Mg113ModelDomicilioPaisResidencia >> errores [
 
-	^ errores
+	^ self valida
 ]
 
 { #category : 'accessing' }
@@ -106,7 +93,6 @@ Mg113ModelDomicilioPaisResidencia >> fax: anObject [
 Mg113ModelDomicilioPaisResidencia >> initialize [
 
 	super initialize.
-	errores := OrderedCollection new.
 ]
 
 { #category : 'as yet unclassified' }
@@ -124,8 +110,6 @@ Mg113ModelDomicilioPaisResidencia >> pais [
 { #category : 'accessing' }
 Mg113ModelDomicilioPaisResidencia >> pais: aString [
 
-	 (aString isNil or: [aString trim isEmpty]) ifTrue: [ 
-		errores add: (MgError widgetId: #pais descripcion: 'Pais no informado. Es obligatorio') ].
 	pais := aString
 ]
 
@@ -138,9 +122,6 @@ Mg113ModelDomicilioPaisResidencia >> poblacion [
 { #category : 'accessing' }
 Mg113ModelDomicilioPaisResidencia >> poblacion: aString [
 
-	(aString isNil or: [aString trim isEmpty]) ifTrue: [ 
-		errores add: (MgError widgetId: #poblacion descripcion: 'Poblacion/Ciudad no informada. Es obligatorio')
-		 ].
 	poblacion := aString
 ]
 
@@ -187,9 +168,6 @@ Mg113ModelDomicilioPaisResidencia >> provincia [
 { #category : 'accessing' }
 Mg113ModelDomicilioPaisResidencia >> provincia: aString [
 
-	(aString isNil or: [aString trim isEmpty]) ifTrue: [ 
-		errores add: (MgError widgetId: #provincia descripcion: 'Provincia/Region/Estado no informada. Es obligatorio' )
-		 ].
 	provincia := aString
 ]
 
@@ -203,4 +181,120 @@ Mg113ModelDomicilioPaisResidencia >> telefono [
 Mg113ModelDomicilioPaisResidencia >> telefono: anObject [
 
 	telefono := anObject
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> valida [
+	"valida los campos del domicilio en el país de residencia y devuelve una lista de los errores encontrados"
+
+	| errores |
+	errores := OrderedCollection new.
+	errores addAll: self validaDomicilio.
+	errores addAll: self validaComplemento.
+	errores addAll: self validaPoblacion.
+	errores addAll: self validaEmail.
+	errores addAll: self validaCodigoPostal.
+	errores addAll: self validaProvincia.
+	errores addAll: self validaTelefono.
+	errores addAll: self validaFax.
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaCodigoPostal [
+
+	| errores |
+	errores := OrderedCollection new.
+	(codigoPostal isNil or: [ codigoPostal isEmpty ]) ifTrue: [
+			errores add: (MgError
+					 widgetId: #codigoPostal
+					 descripcion: 'Código postal sin informar. Es obligatorio') ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaComplemento [
+
+	^ #()
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaDomicilio [
+
+	| errores |
+	errores := OrderedCollection new.
+	(domicilio isNil or: [ domicilio trim isEmpty ]) ifTrue: [
+			errores add: (MgError
+					 widgetId: #domicilio
+					 descripcion: 'Domicilio no informado. Es obligatorio') ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaEmail [
+
+	| errores |
+	errores := OrderedCollection new.
+	(email isNil or: [ email trim isEmpty ]) ifTrue: [
+			errores add: (MgError
+					 widgetId: #email
+					 descripcion: 'Email no informado. Es obligatorio') ].
+	(email matchesRegex: '^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+$') ifFalse: [
+			errores add: (MgError
+					 widgetId: #email
+					 descripcion: 'Email incorrecto. No tiene un formato válido') ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaFax [
+
+	| errores |
+	errores := OrderedCollection new.
+	(fax isNotNil and: [ fax trim isNotEmpty ]) ifTrue: [ 
+		fax trim size = 9 ifFalse: [ errores add: (MgError
+					 widgetId: #fax
+					 descripcion:
+					 'Fax invalido. Número de dígitos del fax incorrecto') ]
+		 ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaPoblacion [
+
+	| errores |
+	errores := OrderedCollection new.
+	(poblacion isNil or: [ poblacion trim isEmpty ]) ifTrue: [
+			errores add: (MgError
+					 widgetId: #poblacion
+					 descripcion: 'Poblacion/Ciudad no informada. Es obligatorio') ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaProvincia [
+
+	| errores |
+	errores := OrderedCollection new.
+	(provincia isNil or: [ provincia trim isEmpty ]) ifTrue: [
+			errores add: (MgError
+					 widgetId: #provincia
+					 descripcion:
+					 'Provincia/Region/Estado no informada. Es obligatorio') ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioPaisResidencia >> validaTelefono [
+
+	| errores |
+	errores := OrderedCollection new.
+	(telefono isNotNil and: [ telefono trim isNotEmpty ]) ifTrue: [ 
+		telefono trim size = 9 ifFalse: [ errores add: (MgError
+					 widgetId: #telefono
+					 descripcion:
+					 'Telefono invalido. Número de dígitos del teléfono incorrecto') ]
+		 ].
+	^ errores
 ]

@@ -2,7 +2,6 @@ Class {
 	#name : 'Mg113ModelDomicilioTerritorioEspañol',
 	#superclass : 'Object',
 	#instVars : [
-		'errores',
 		'tipoVia',
 		'nombreVia',
 		'tipoNumeracion',
@@ -76,7 +75,7 @@ Mg113ModelDomicilioTerritorioEspañol >> complemento: anObject [
 { #category : 'accessing' }
 Mg113ModelDomicilioTerritorioEspañol >> errores [
 
-	^ errores
+	^ OrderedCollection new
 ]
 
 { #category : 'accessing' }
@@ -101,13 +100,6 @@ Mg113ModelDomicilioTerritorioEspañol >> fax [
 Mg113ModelDomicilioTerritorioEspañol >> fax: anObject [
 
 	fax := anObject
-]
-
-{ #category : 'initialization' }
-Mg113ModelDomicilioTerritorioEspañol >> initialize [
-
-	super initialize.
-	errores := OrderedCollection new
 ]
 
 { #category : 'accessing' }
@@ -283,4 +275,64 @@ Mg113ModelDomicilioTerritorioEspañol >> tipoVia [
 Mg113ModelDomicilioTerritorioEspañol >> tipoVia: anObject [
 
 	tipoVia := anObject
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioTerritorioEspañol >> valida [
+
+	| errores |
+	errores := OrderedCollection new.
+	errores addAll: self validaNombreVia.
+	errores addAll: self validaTipoNum.
+	errores addAll: self validaNumero.
+	errores addAll: self validaCodigoPostal.
+	errores addAll: self validaTelefono.
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioTerritorioEspañol >> validaCodigoPostal [
+
+	| errores |
+	errores := OrderedCollection new.
+	(codigoPostal isNil or: [ codigoPostal trim isEmpty ]) ifTrue: [ 
+		^ errores add: (MgError
+					 widgetId: #codigoPostal
+					 descripcion: 'Código postal sin informar. Es obligatorio'); yourself
+		 ].
+	(codigoPostal trim size ~= 5) ifTrue: [ 
+		errores add: (MgError widgetId: #codigoPostal descripcion: 'Codigo postal erróneo. Debe tener cinco dígitos')
+		 ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioTerritorioEspañol >> validaNombreVia [
+
+	(nombreVia isNil or: [ nombreVia trim isEmpty ]) ifTrue: [
+			^ OrderedCollection
+				  with: (MgError
+						   widgetId: #nombreVia
+						   descripcion: 'Nombre vía sin informar. Es obligatorio') ].
+	^ #()
+]
+
+{ #category : 'as yet unclassified' }
+Mg113ModelDomicilioTerritorioEspañol >> validaNumero [
+
+	(numero isNil or: [numero trim isEmpty]) ifTrue: [ 
+		^ OrderedCollection with: (MgError widgetId: #numero descripcion: 'Número sin informar. Es obligatorio' ) ].
+	^ #()
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioTerritorioEspañol >> validaTelefono [
+
+	^ #()
+]
+
+{ #category : 'validation' }
+Mg113ModelDomicilioTerritorioEspañol >> validaTipoNum [
+
+	^ #()
 ]

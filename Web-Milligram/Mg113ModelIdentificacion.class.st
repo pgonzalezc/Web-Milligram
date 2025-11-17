@@ -5,8 +5,7 @@ Class {
 		'nif',
 		'apellidos',
 		'nombre',
-		'domicilio',
-		'errores'
+		'domicilio'
 	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
@@ -28,11 +27,6 @@ Mg113ModelIdentificacion >> apellidos [
 { #category : 'accessing' }
 Mg113ModelIdentificacion >> apellidos: aString [
 
-	(aString isNil or: [ aString trim isEmpty ]) ifTrue: [
-			errores add: (MgError
-					 widgetId: #apellidos
-					 descripcion:
-					 'Apellidos no informados. Es obligatorio informar los apellidos') ].
 	apellidos := aString
 ]
 
@@ -45,19 +39,12 @@ Mg113ModelIdentificacion >> domicilio [
 { #category : 'accessing' }
 Mg113ModelIdentificacion >> errores [
 
-	| errors |
-	errors := errores copy.
-	errors addAll: self domicilio errores.
-	domicilio errores removeAll.
-	errores removeAll.
-	^ errors
-]
-
-{ #category : 'initialization' }
-Mg113ModelIdentificacion >> initialize [
-
-	super initialize.
-	errores := OrderedCollection new
+	| errores | 
+	
+	errores := self valida.
+	errores addAll: self domicilio errores.
+	^ errores
+	
 ]
 
 { #category : 'accessing' }
@@ -68,16 +55,6 @@ Mg113ModelIdentificacion >> nif [
 
 { #category : 'accessing' }
 Mg113ModelIdentificacion >> nif: aString [
-
-	(aString isNil or: [ aString trim isEmpty ]) ifTrue: [
-			errores add: (MgError
-					 widgetId: #nif
-					 descripcion: 'NIF no informado. Es obligatorio') ].
-	aString size ~= 9 ifTrue: [
-			errores add: (MgError
-					 widgetId: #nif
-					 descripcion:
-					 'NIF erróneo. Longitud incorrecta, debe ser de nueve caracteres') ].
 
 	nif := aString
 ]
@@ -91,10 +68,6 @@ Mg113ModelIdentificacion >> nombre [
 { #category : 'accessing' }
 Mg113ModelIdentificacion >> nombre: aString [
 
-	(aString isNil or: [ aString trim isEmpty ]) ifTrue: [
-			errores add: (MgError
-					 widgetId: #nombre
-					 descripcion: 'Nombre no informado. Es obligatorio') ].
 	nombre := aString
 ]
 
@@ -115,4 +88,59 @@ Mg113ModelIdentificacion >> printOn: aStream [
 	aStream
 		nextPutAll: ' domicilio: ';
 		print: domicilio
+]
+
+{ #category : 'validation' }
+Mg113ModelIdentificacion >> valida [
+
+	"Valida el modelo y devuelve una lista con los errores encontrados"
+	| errores |
+	errores := OrderedCollection new.
+	errores addAll: self validaNif.
+	errores addAll: self validaNombre.
+	errores addAll: self validaApellidos.
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelIdentificacion >> validaApellidos [
+
+	| errores |
+	errores := OrderedCollection new.
+	(apellidos isNil or: [ apellidos trim isEmpty ]) ifTrue: [
+			errores add: (MgError
+					 widgetId: #apellidos
+					 descripcion:
+					 'Apellidos no informados. Es obligatorio informar los apellidos') ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelIdentificacion >> validaNif [
+
+	| errores |
+	errores := OrderedCollection new.
+	(nif isNil or: [ nif trim isEmpty ]) ifTrue: [
+			^ errores add: (MgError
+					 widgetId: #nif
+					 descripcion: 'NIF no informado. Es obligatorio'); yourself ].
+	nif size ~= 9 ifTrue: [
+			errores add: (MgError
+					 widgetId: #nif
+					 descripcion:
+					 'NIF erróneo. Longitud incorrecta, debe ser de nueve caracteres') ].
+	^ errores
+]
+
+{ #category : 'validation' }
+Mg113ModelIdentificacion >> validaNombre [
+
+	| errores |
+	errores := OrderedCollection new.
+	(nombre isNil or: [ nombre trim isEmpty ]) ifTrue: [
+			errores add: (MgError
+					 widgetId: #nombre
+					 descripcion: 'Nombre no informado. Es obligatorio') ].
+
+	^ errores
 ]

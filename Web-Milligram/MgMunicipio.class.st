@@ -82,25 +82,25 @@ MgMunicipio >> printOn: aStream [
 		print: nombre
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgMunicipio >> setCodigoAtMunicipio: anObject [
 
 	codigoAt := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgMunicipio >> setCodigoIneMunicipio: anObject [
 
 	CodigoIne := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgMunicipio >> setCodigoProvincia: anObject [
 
 	codigoProvincia := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgMunicipio >> setNombreMunicipio: anObject [
 
 	nombre := anObject

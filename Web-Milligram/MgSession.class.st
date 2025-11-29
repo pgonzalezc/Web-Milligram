@@ -2,7 +2,8 @@ Class {
 	#name : 'MgSession',
 	#superclass : 'WASession',
 	#instVars : [
-		'authenUser'
+		'authenUser',
+		'contribuyente'
 	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
@@ -19,4 +20,16 @@ MgSession >> authenticatedUser [
 MgSession >> authenticatedUser: aSSLCertInfo [
 
 	authenUser := aSSLCertInfo
+]
+
+{ #category : 'accessing' }
+MgSession >> contribuyente [
+
+	^ contribuyente
+]
+
+{ #category : 'accessing' }
+MgSession >> contribuyente: anIdentification [
+
+	contribuyente := anIdentification
 ]

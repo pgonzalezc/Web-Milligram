@@ -11,7 +11,7 @@ Class {
 	#tag : 'Utils'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'private - building' }
 MgConstantes class >> cargaMunicipiosFrom: aFileName [
 
 	| municipios |
@@ -42,7 +42,7 @@ MgConstantes class >> cargaMunicipiosFrom: aFileName [
 	^ municipios
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'private - building' }
 MgConstantes class >> cargaPoblacionesFrom: aFileName [
 
 	| poblaciones |

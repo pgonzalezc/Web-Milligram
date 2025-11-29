@@ -370,30 +370,6 @@ Mg113ViewIdentificacionRepresentante >> toggleNumeracionJs [
 ]
 
 { #category : 'as yet unclassified' }
-Mg113ViewIdentificacionRepresentante >> toggleNumeracionSt [
-
-	^ ((JSStream on: '$') apply: #( '#tipoNumeracion' ))
-		  call: 'val';
-		  equal: '3';
-		  then:
-			  (((JSStream on: '$') apply: #( '#numero, #calificadorNumero' ))
-				   call: 'each'
-				   with: (JSFunction new
-						    add: ((JSStream on: '$')
-								     apply: { JSStream this };
-								     call: 'prop' withArguments: #( 'disabled' true ));
-						    yourself))
-		  else:
-			  (((JSStream on: '$') apply: #('#numero, #calificadorNumero' ))
-				   call: 'each'
-				   with: (JSFunction new
-						    add: ((JSStream on: '$')
-								     apply: { JSStream this };
-								     call: 'prop' withArguments: #( 'disabled' false ));
-						    yourself))
-]
-
-{ #category : 'as yet unclassified' }
 Mg113ViewIdentificacionRepresentante >> trataNuevoMunicipio: unMunicipio [
 
 	| poblacion |

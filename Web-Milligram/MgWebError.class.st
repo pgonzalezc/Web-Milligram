@@ -28,13 +28,13 @@ MgWebError >> descripcion [
 	^ descripcion
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private - accessing' }
 MgWebError >> setDescription: aString [
 
 	descripcion := aString
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private - accessing' }
 MgWebError >> setWidgetId: aWidgetId [
 
 	widgetId := aWidgetId

@@ -322,7 +322,7 @@ Mg113ModelDomicilioTerritorioEspañol >> validaNumero [
 
 	(numero isNil or: [numero trim isEmpty]) ifTrue: [ 
 		^ OrderedCollection with: (MgError widgetId: #numero descripcion: 'Número sin informar. Es obligatorio' ) ].
-	^ #()
+	^ OrderedCollection new 
 ]
 
 { #category : 'validation' }

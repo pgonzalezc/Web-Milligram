@@ -86,7 +86,10 @@ MgViewBreadcrumbs >> next [
 	"Pasamos al siguiente paso del workflow, si no hay errores"
 
 	errors := (panels at: idx) view errors.
-	errors ifEmpty: [ idx := idx + 1 ]
+	errors ifEmpty: [
+			"Guardamos en la sesión la identicación del contribuyente"
+			idx = 2 ifTrue: [ self session contribuyente: (panels at: 2) view model ].
+			idx := idx + 1 ]
 ]
 
 { #category : 'actions' }

@@ -38,6 +38,6 @@ MgTestSelectProvincias >> renderSelectProvinciasOn: html [
 	html select
 		id: 'provincias';
 		list: MgConstantes listaProvincias;
-		labels: [ :p | p second ];
+		labels: [ :p | p nombreProvincia ];
 		selected: (MgConstantes listaProvincias at: 15)
 ]

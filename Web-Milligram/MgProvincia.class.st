@@ -80,25 +80,25 @@ MgProvincia >> printOn: aStream [
 		print: nombre
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgProvincia >> setCodigoComunidadAutonoma: anObject [
 
 	codigoComunidad := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgProvincia >> setCodigoProvincia: anObject [
 
 	codigo := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgProvincia >> setNombreComunidadAutonoma: anObject [
 
 	nombreComunidad := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgProvincia >> setNombreProvincia: anObject [
 
 	nombre := anObject

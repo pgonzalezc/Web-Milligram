@@ -50,8 +50,10 @@ MgSSLCertInfo >> fieldNamed: aString from: anotherString [
 
 { #category : 'testing' }
 MgSSLCertInfo >> isSuccess [
+	"Indica si la validación del certificado a sido correcta o no"
 
-	^ sslData isNotEmpty and: [ (sslData at: 'ssl_client_verify' ifAbsent: ['']) = 'SUCCESS' ]
+	^ sslData isNotEmpty and: [
+		  (sslData at: 'ssl_client_verify' ifAbsent: [ '' ]) = 'SUCCESS' ]
 ]
 
 { #category : 'private' }

@@ -22,6 +22,12 @@ Mg113ViewIdentificacion >> initialize [
 	
 ]
 
+{ #category : 'accessing' }
+Mg113ViewIdentificacion >> model [
+	
+	^ model
+]
+
 { #category : 'rendering' }
 Mg113ViewIdentificacion >> renderFieldApellidosOn: html [
 

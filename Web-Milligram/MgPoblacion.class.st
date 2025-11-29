@@ -91,31 +91,31 @@ MgPoblacion >> printOn: aStream [
 		print: nombreMunicipio
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgPoblacion >> setCodigoAtMunicipio: anObject [
 
 	codigoAtMunicipio := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgPoblacion >> setCodigoIneMunicipio: anObject [
 
 	codigoIneMunicipio := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgPoblacion >> setCodigoProvincia: anObject [
 
 	codigoProvincia := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgPoblacion >> setNombreMunicipio: anObject [
 
 	nombreMunicipio := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private' }
 MgPoblacion >> setNombrePoblacion: anObject [
 
 	nombre := anObject

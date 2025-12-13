@@ -23,6 +23,14 @@ MgViewBase class >> ppImp: unImporte [
 		   delimiter: $,) print: unImporte
 ]
 
+{ #category : 'as yet unclassified' }
+MgViewBase class >> ppPorc: aNumber precision: anInteger [
+
+	^ GRSignPrinter new , (GRNumberPrinter new
+		   precision: anInteger;
+		   delimiter: $,) print: aNumber
+]
+
 { #category : 'initialization' }
 MgViewBase class >> resetLoggers [
 
@@ -54,6 +62,12 @@ MgViewBase >> milligramJsLibs [
 { #category : 'accessing' }
 MgViewBase >> ppImp: unImporte [ 
 	^ self class ppImp: unImporte 
+]
+
+{ #category : 'as yet unclassified' }
+MgViewBase >> ppPorc: aNumber precision: anInteger [
+
+	^ self class ppPorc: aNumber precision:  anInteger
 ]
 
 { #category : 'rendering' }

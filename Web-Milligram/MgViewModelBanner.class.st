@@ -30,12 +30,6 @@ MgViewModelBanner >> renderContentOn: html [
 		class: 'container';
 		with: [
 				html div with: [
-							html div
-								class: 'model-code';
-								with: [
-										html strong
-											style: 'font-size: 18pt';
-											with: 'Modelo ' , code ].
 							html div with: [
 									description allButLast do: [ :each |
 											html span

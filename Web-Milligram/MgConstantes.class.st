@@ -83,7 +83,7 @@ MgConstantes class >> initialize [
 	Poblaciones := nil.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaComunidadesAutonomas [
 
 	^ Comunidades ifNil: [
@@ -94,21 +94,21 @@ MgConstantes class >> listaComunidadesAutonomas [
 				                 a first asInteger < b first asInteger ] ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaMunicipiosProvincia: unCodigoProvincia [
 
 	Municipios ifNil: [ Municipios := self cargaMunicipiosFrom: 'Descargas/TablaMunicipios.txt' ].
 	^ Municipios at: unCodigoProvincia 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaNombreProvincias [
 
 	^ self listaProvincias collect: [ :provincia |
 		  provincia nombreProvincia asSymbol ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaPoblacionesMunicipio: unCodigoMunicipio [
 
 	Poblaciones ifNil: [
@@ -117,7 +117,7 @@ MgConstantes class >> listaPoblacionesMunicipio: unCodigoMunicipio [
 	^ Poblaciones at: unCodigoMunicipio ifAbsent: #()
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaProvincias [
 
 	^ {
@@ -175,14 +175,14 @@ MgConstantes class >> listaProvincias [
 		  (MgProvincia from: #( '52' 'MELILLA' '19' 'MELILLA' )) }
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaProvinciasComunidad: unCodigoComunidad [
 
 	^ self listaProvincias select: [ :provincia |
 		  provincia codigoComunidadAutonoma asInteger = unCodigoComunidad asInteger ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaTiposNumeracion [
 
 	^ #(
@@ -193,7 +193,7 @@ MgConstantes class >> listaTiposNumeracion [
 	)
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> listaTiposVias [
 
 ^ { 
@@ -533,7 +533,7 @@ MgTipoVia from: #('ZUMAR' 'AL' 'ZUMARDI')
 }
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MgConstantes class >> tipoViaCalle [
 
 	^ self listaTiposVias at: 57

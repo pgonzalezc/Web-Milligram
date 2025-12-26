@@ -33,7 +33,6 @@ MgAppBase >> next [
 
 	errors := (panels at: idx) view errors.
 	errors ifEmpty: [
-			(panels at: idx) inspect.
 			idx := idx + 1 ]
 ]
 
@@ -41,7 +40,6 @@ MgAppBase >> next [
 MgAppBase >> previous [
 
 	"previo paso del workflow"
-	(panels at: idx) inspect.
 	idx := idx - 1
 ]
 
@@ -77,7 +75,7 @@ MgAppBase >> renderBotoneraOn: html [
 ]
 
 { #category : 'rendering' }
-MgAppBase >> renderBreadcrumbId: anInteger on: html [
+MgAppBase >> renderBreadcrumbAt: anInteger on: html [
 
 	| classValue |
 	classValue := anInteger = idx
@@ -89,37 +87,26 @@ MgAppBase >> renderBreadcrumbId: anInteger on: html [
 		id: (panels at: anInteger) id;
 		url: 'javascript:void(0)';
 		onClick: (html jQuery ajax
-				 callback: [ :value |
-						 | panelsNames |
-						 panelsNames := panels collect: [ :bcInfo | bcInfo id ].
-						 idx := panelsNames indexOf: value ]
-				 value: (html jQuery this attributeAt: 'id');
+				 serialize: ((html jQuery id: 'view') find: 'input');
 				 script: [ :s |
-						 s << (s jQuery id: 'breadcrumb') load html: [ :r |
-								 self renderBreadcrumbsOn: r ].
-						 s << (s jQuery id: 'view') load html: [ :r |
-									 r div
-										 class: 'container';
-										 with: [
-												 r heading
-													 level: 4;
-													 with: [
-															 html strong:
-																	 ((panels at: idx) descripcion at: 1 ifAbsent: '').
-															 html break.
-															 html small:
-																	 ((panels at: idx) descripcion at: 2 ifAbsent: '') ].
-												 r render: (panels at: idx) view ] ].
+						 idx := anInteger.
 						 s << (s jQuery id: 'botonera') load html: [ :r |
-							 self renderBotoneraOn: r ] ]);
-		with: (panels at: anInteger) descripcion first capitalized
+							 self renderBotoneraOn: r ].
+						 s << (html jQuery id: 'view') load html: [ :canvas |
+								 canvas render: (panels at: idx) view].
+						 s << ((html jQuery id: 'breadcrumb') find: 'a') removeClass:
+								 'active'.
+						 s << (html jQuery id: (panels at: idx) id) toggleClass:
+								 'active'
+						 "self halt." ]);
+		with: (panels at: anInteger) label
 ]
 
 { #category : 'rendering' }
 MgAppBase >> renderBreadcrumbsOn: html [
 
 	panels doWithIndex: [ :each :index |
-		self renderBreadcrumbId: index on: html ]
+		self renderBreadcrumbAt: index on: html ]
 ]
 
 { #category : 'rendering' }
@@ -172,12 +159,7 @@ MgAppBase >> renderContentOn: html [
 									html heading
 										level: 4;
 										with: [
-												html strong:
-														((panels at: idx) descripcion at: 1 ifAbsent: '').
-												html break.
-												html small:
-														((panels at: idx) descripcion at: 2 ifAbsent: '') ].
-									html render: (panels at: idx) view ] ] ]
+									html render: (panels at: idx) view ] ] ] ]
 ]
 
 { #category : 'rendering' }

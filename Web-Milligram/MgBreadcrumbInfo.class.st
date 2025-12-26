@@ -3,7 +3,7 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'id',
-		'descripcion',
+		'label',
 		'view'
 	],
 	#category : 'Web-Milligram-View',
@@ -12,18 +12,12 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-MgBreadcrumbInfo class >> withId: aSymbolOrString description: aString view: aWAComponent [
+MgBreadcrumbInfo class >> withId: aSymbolOrString label: aString view: aWAComponent [
 
 	^ self basicNew
 		setId: aSymbolOrString ;
-		setDescripcion: aString ;
-		setView: aWAComponent 
-]
-
-{ #category : 'accessing' }
-MgBreadcrumbInfo >> descripcion [
-
-	^ descripcion
+		setLabel: aString ;
+		setView: aWAComponent
 ]
 
 { #category : 'accessing' }
@@ -32,16 +26,22 @@ MgBreadcrumbInfo >> id [
 	^ id
 ]
 
-{ #category : 'private' }
-MgBreadcrumbInfo >> setDescripcion: aString [
+{ #category : 'accessing' }
+MgBreadcrumbInfo >> label [
 
-	descripcion := aString
+	^ label
 ]
 
 { #category : 'private' }
 MgBreadcrumbInfo >> setId: aSymbolOrString [
 
 	id := aSymbolOrString 
+]
+
+{ #category : 'initialization' }
+MgBreadcrumbInfo >> setLabel: aString [
+
+	label := aString
 ]
 
 { #category : 'private' }

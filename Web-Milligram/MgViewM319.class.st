@@ -1,6 +1,9 @@
 Class {
 	#name : 'MgViewM319',
 	#superclass : 'MgAppBase',
+	#instVars : [
+		'models'
+	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
 	#tag : 'View'
@@ -20,38 +23,91 @@ MgViewM319 class >> initialize [
 		preferenceAt: #sessionClass put: MgSession
 ]
 
+{ #category : 'as yet unclassified' }
+MgViewM319 >> cargarProductosPrueba [
+	"Inicializamos algunos productos en el modelo de la vista de liquidacion"
+
+	(panels at: 4) view model addProducto: (Mg319ModelProducto
+			 withTipo: 'Gasolina'
+			 volumen: 123.23
+			 precioLitro: 1.2343).
+	(panels at: 4) view model addProducto: (Mg319ModelProducto
+			 withTipo: 'Keroseno'
+			 volumen: 1234.43
+			 precioLitro: 1.1256)
+]
+
+{ #category : 'as yet unclassified' }
+MgViewM319 >> createViewModelBanner [
+
+	^ MgViewModelBanner new
+		setCode: '319';
+		setDescription:
+			#( 'Impuesto sobre el valor añadido'
+			   'Pago a cuenta del IVA correspondiente a las entregas de gasolinas, gasóleos y biocarburantes posteriores a la ultimación del régimen de depósito del aduanero' )
+]
+
 { #category : 'initialization' }
 MgViewM319 >> initialize [
 
 	super initialize.
 	idx := 1.
+	"Paneles que contienen modelos"
 	panels := OrderedCollection
 		          with: (MgBreadcrumbInfo
-				           withId: 'model-info'
-				           description: #('Modelo 319')
-				           view: (MgViewModelBanner new
-						            setCode: '319';
-						            setDescription:
-							            #( 'Impuesto sobre el valor añadido'
-							               'Pago a cuenta del IVA correspondiente a las entregas de gasolinas, gasóleos y biocarburantes posteriores a la ultimación del régimen de depósito del aduanero' )))
+				           withId: #identificacion
+				           label: 'Identificación'
+				           view: (MgViewIdentificacion new
+						            addDecoration:
+							            (MgDecorationPanelHeader new setData:
+									             #( 'Identificación ' ));
+						            yourself))
 		          with: (MgBreadcrumbInfo
-				           withId: 'identificacion'
-				           description: #('Identificación (1)')
-				           view: MgViewIdentificacion new)
+				           withId: #devengo
+				           label: 'Devengo'
+				           view: (MgViewDevengo new
+						            addDecoration:
+							            (MgDecorationPanelHeader new setData:
+									             #( 'Devengo ' ));
+						            yourself))
 		          with: (MgBreadcrumbInfo
-				           withId: 'devengo'
-				           description: #('Devengo (2)')
-				           view: MgViewDevengo new)
+				           withId: #liquidacion
+				           label: 'Liquidación'
+				           view: (Mg319ViewLiquidacion new
+						            addDecoration:
+							            (MgDecorationPanelHeader new setData:
+									             #( 'Liquidación ' ));
+						            yourself))
 		          with: (MgBreadcrumbInfo
-				           withId: 'Liquidación (3)'
-				           description: #('Liquidación (3)')
-				           view: Mg319ViewLiquidacion new)
-		          with: (MgBreadcrumbInfo
-				           withId: 'Tributación Territorial (5)'
-				           description:
-					           #( 'Información de la tributacion por razón de territorio (5)'
-					              '(sólo para sujetos pasivos que tributan en varias administraciones )' )
-				           view: Mg319ViewTributacionTerritorial new)
+				           withId: #tributacionTerritorial
+				           label: 'Tributación territorial'
+				           view: (Mg319ViewGridTributacionTerritorial new
+						            addDecoration:
+							            (MgDecorationPanelHeader new setData:
+									             #( 'Información de la tributacion por razón de territorio'
+									                '(sólo para sujetos pasivos que tributan en varias administraciones )' ));
+						            yourself)).
+	models := panels collect: [ :panel | panel view model ].
+	"Panel informativo"
+	panels addFirst: (MgBreadcrumbInfo
+			 withId: #modelInfo
+			 label: 'Info del modelo'
+			 view: (self createViewModelBanner
+					  addDecoration:
+						  (MgDecorationPanelHeader new setData: #( 'Modelo 319' ));
+					  yourself)).
+	"Panel de resumen"
+	panels add: (MgBreadcrumbInfo
+			 withId: #resumenYEnvio
+			 label: 'Resúmen y envío'
+			 view: ((Mg319ViewResumen new models: models)
+					  addDecoration: (MgDecorationPanelHeader new setData:
+								   #( 'Resumen de la declaración y envío' ));
+					  yourself)).
+	"announcements"
+	(panels at: 4) view model informChangeOnResultadoTo:
+		(panels at: 5) view model.
+	self cargarProductosPrueba
 ]
 
 { #category : 'updating' }

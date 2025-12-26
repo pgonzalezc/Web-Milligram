@@ -12,9 +12,9 @@ Class {
 { #category : 'as yet unclassified' }
 Mg319ViewLiquidacion >> añadir [ 
 
-	| answer |
-	answer := self call: Mg319ViewEditProducto new.
-	model addProducto: answer
+| answer |
+	answer := self call: (Mg319ViewEditProducto new addDecoration: (MgDecorationPanelHeader new setData: #('Nuevo Producto')); yourself).
+	answer ifNotNil: [ model addProducto: answer ]
 ]
 
 { #category : 'accessing' }
@@ -29,6 +29,12 @@ Mg319ViewLiquidacion >> initialize [
 
 	super initialize.
 	model := Mg319ModelLiquidacion new.
+]
+
+{ #category : 'accessing' }
+Mg319ViewLiquidacion >> model [
+
+	^ model
 ]
 
 { #category : 'rendering' }
@@ -113,7 +119,15 @@ Mg319ViewLiquidacion >> renderTableTitleOn: html [
 								style: 'font-size: 18pt; font-weight: bold';
 								with: 'Productos'.
 							html space.
-							html button id: 'button-añadir'; class: 'button button-clear'; style: 'background-image: url(/static-files/img/list-add-symbolic.svg);background-repeat: no-repeat'; callback: [self añadir].
+							html div
+								class: 'float-right';
+								with: [
+										html button
+											id: 'button-añadir';
+											class: 'button button-clear';
+											style:
+												'background-image: url(/static-files/img/list-add-symbolic.svg);background-repeat: no-repeat';
+											callback: [ self añadir ] ]
 							"html anchor
 								id: 'button-añadir';
 								callback: [ self añadir ];

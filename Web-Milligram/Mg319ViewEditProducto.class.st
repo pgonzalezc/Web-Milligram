@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+Mg319ViewEditProducto >> cancelar [ 
+
+	self answer: nil
+]
+
+{ #category : 'as yet unclassified' }
 Mg319ViewEditProducto >> crear [
 
 	self answer: model
@@ -23,26 +29,31 @@ Mg319ViewEditProducto >> initialize [
 ]
 
 { #category : 'rendering' }
-Mg319ViewEditProducto >> renderContentOn: html [
+Mg319ViewEditProducto >> renderBotoneraOn: html [
 
-	html heading
-		level: 3;
-		with: 'Nuevo producto'.
-	self renderFieldSetOn: html.
 	html div
 		class: 'float-right';
 		with: [
+				html button class: 'button button-outline'; id: #cancelar; callback: [ self cancelar ]; value: 'Cancelar'.
 				html button
 					id: #crear;
+					class: 'button';
 					callback: [ self crear ];
 					value: 'Crear' ]
 ]
 
 { #category : 'rendering' }
-Mg319ViewEditProducto >> renderFieldCuotaIvaOn: html [
+Mg319ViewEditProducto >> renderContentOn: html [
 
+	self renderFieldSetOn: html.
+	self renderBotoneraOn: html
+]
+
+{ #category : 'rendering' }
+Mg319ViewEditProducto >> renderFieldCuotaIvaOn: html [
+	
 	html label for: #cuotaIva; with: 'Cuota IVA'.
-	html textInput id: #cuotaIva; readonly: true;  value: ( self ppImp: model cuotaIva ) 
+	html textInput disabled id: #cuotaIva; value: ( self ppImp: model cuotaIva ) 
 ]
 
 { #category : 'rendering' }

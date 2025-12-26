@@ -22,6 +22,12 @@ MgViewDevengo >> initialize [
 	model := MgModelDevengo new
 ]
 
+{ #category : 'accessing' }
+MgViewDevengo >> model [
+
+	^ model
+]
+
 { #category : 'rendering' }
 MgViewDevengo >> renderContentOn: html [
 

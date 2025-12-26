@@ -28,6 +28,12 @@ MgViewIdentificacion >> initialize [
 	model := MgModelIdentificacion new
 ]
 
+{ #category : 'accessing' }
+MgViewIdentificacion >> model [
+
+	^ model
+]
+
 { #category : 'rendering' }
 MgViewIdentificacion >> renderContentOn: html [
 

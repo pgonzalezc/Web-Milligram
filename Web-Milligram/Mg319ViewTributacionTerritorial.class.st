@@ -9,6 +9,12 @@ Class {
 	#tag : 'View'
 }
 
+{ #category : 'accessing' }
+Mg319ViewTributacionTerritorial >> errors [ 
+
+	^ OrderedCollection new 
+]
+
 { #category : 'rendering' }
 Mg319ViewTributacionTerritorial >> renderContentOn: html [
 

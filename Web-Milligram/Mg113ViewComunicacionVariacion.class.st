@@ -66,6 +66,12 @@ Mg113ViewComunicacionVariacion >> initialize [
 ]
 
 { #category : 'accessing' }
+Mg113ViewComunicacionVariacion >> model [
+
+	^ model
+]
+
+{ #category : 'accessing' }
 Mg113ViewComunicacionVariacion >> opcionA [
 
 	^ model opcionA
@@ -134,13 +140,8 @@ Mg113ViewComunicacionVariacion >> renderCheckboxesOn: html [
 { #category : 'rendering' }
 Mg113ViewComunicacionVariacion >> renderContentOn: html [
 
-			html div
-				class: 'container';
-				with: [
-						html heading level4 with: 'Comunicación de variación de circunstancias'.
-						self renderCheckboxesOn: html.
-						self renderEntidadesOn: html.
-						"self renderButtonsOn: html" ] 
+	self renderCheckboxesOn: html.
+	self renderEntidadesOn: html
 ]
 
 { #category : 'rendering' }

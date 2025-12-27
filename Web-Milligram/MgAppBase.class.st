@@ -151,15 +151,11 @@ MgAppBase >> renderContentOn: html [
 			html break.
 			html div
 				id: 'view';
-				class: 'view';
+				class: 'view container';
 				with: [
 						html div
 							class: 'container';
-							with: [
-									html heading
-										level: 4;
-										with: [
-									html render: (panels at: idx) view ] ] ] ]
+							with: [ html render: (panels at: idx) view ] ] ]
 ]
 
 { #category : 'rendering' }

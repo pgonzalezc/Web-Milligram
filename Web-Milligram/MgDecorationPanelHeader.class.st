@@ -14,13 +14,13 @@ Class {
 { #category : 'rendering' }
 MgDecorationPanelHeader >> renderContentOn: html [
 
-	html div
+	"html div
 		class: 'container';
-		with: [
+		with: ["
 				html heading level4 with: title.
 				subtitle ifNotEmpty: [ html heading level6 with: subtitle ].
 				detail ifNotEmpty: [ html paragraph: [ html small: detail ] ].
-				self renderNextOn: html ]
+				self renderNextOn: html "]"
 ]
 
 { #category : 'initialization' }

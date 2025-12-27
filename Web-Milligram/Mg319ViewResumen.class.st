@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : 'accessing' }
+Mg319ViewResumen >> errors [
+
+	^ OrderedCollection new 
+]
+
+{ #category : 'accessing' }
 Mg319ViewResumen >> models: aCollection [
 
 	models := aCollection
@@ -18,5 +24,5 @@ Mg319ViewResumen >> models: aCollection [
 { #category : 'rendering' }
 Mg319ViewResumen >> renderContentOn: html [
 
-	models inspect
+	html div class: 'banner'; with: [ html text: 'Not Implemented yet.....' ]
 ]

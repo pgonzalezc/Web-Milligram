@@ -50,12 +50,8 @@ Mg113ViewIdentificacionRepresentante >> initialize [
 { #category : 'rendering' }
 Mg113ViewIdentificacionRepresentante >> renderContentOn: html [
 
-	html div
-		class: 'container';
-		with: [
-				html heading level4 with: 'Representante del contribuyente'.
-				self renderIdentificacionContribuyenteOn: html.
-				self renderDomicilioEnTerritorioEspañolOn: html ]
+	self renderIdentificacionContribuyenteOn: html.
+	self renderDomicilioEnTerritorioEspañolOn: html
 ]
 
 { #category : 'rendering' }

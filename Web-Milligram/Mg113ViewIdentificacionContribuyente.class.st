@@ -69,13 +69,8 @@ Mg113ViewIdentificacionContribuyente >> paises [
 { #category : 'rendering' }
 Mg113ViewIdentificacionContribuyente >> renderContentOn: html [
 
-	html div
-		class: 'container';
-		with: [
-				html heading level4 with: 'Contribuyente'.
-				self renderIdentificacionContribuyenteOn: html.
-				self renderDomicilioEnPaisResidenciaOn: html
-				"self renderButtonsOn: html" ]
+	self renderIdentificacionContribuyenteOn: html.
+	self renderDomicilioEnPaisResidenciaOn: html
 ]
 
 { #category : 'rendering' }

@@ -2,12 +2,19 @@ Class {
 	#name : 'Mg113ViewFirmaYEnvio',
 	#superclass : 'MgViewBase',
 	#instVars : [
-		'modelo'
+		'modelo',
+		'models'
 	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
 	#tag : 'View'
 }
+
+{ #category : 'accessing' }
+Mg113ViewFirmaYEnvio >> errors [
+
+	^ OrderedCollection new
+]
 
 { #category : 'accessing' }
 Mg113ViewFirmaYEnvio >> modelo [
@@ -21,16 +28,22 @@ Mg113ViewFirmaYEnvio >> modelo: aString [
 	modelo := aString
 ]
 
+{ #category : 'accessing' }
+Mg113ViewFirmaYEnvio >> models: aCollection [
+
+	models := aCollection
+]
+
 { #category : 'rendering' }
 Mg113ViewFirmaYEnvio >> renderContentOn: html [
 
+	models inspect.
 	html div
 		class: 'container';
 		with: [
 				html heading
 					level: 3;
-					with: [
-							html span: 'Firmar y enviar. '.
+					with: [ 
 							html span
 								style: 'font-size: smaller';
 								with: 'Confirmación presentación del modelo ' , modelo.
@@ -42,7 +55,7 @@ Mg113ViewFirmaYEnvio >> renderContentOn: html [
 				html div: [ 
 					html text: self session authenticatedUser subject commonName . 
 					html strong: ' en nombre de '.
-					html text: self session contribuyente apellidos, ', ', self session contribuyente nombre.
+					html text: models first apellidos, ', ', models first nombre.
 					].
 				html div
 					class: 'disclaimer';

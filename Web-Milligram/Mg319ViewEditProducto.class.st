@@ -21,6 +21,12 @@ Mg319ViewEditProducto >> crear [
 	self answer: model
 ]
 
+{ #category : 'accessing' }
+Mg319ViewEditProducto >> errors [
+
+	^ OrderedCollection new
+]
+
 { #category : 'initialization' }
 Mg319ViewEditProducto >> initialize [
 

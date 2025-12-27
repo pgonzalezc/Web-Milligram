@@ -19,6 +19,12 @@ MgTestSelectProvincias class >> initialize [
 	WAAdmin register: self	 asApplicationAt: '/milligram/test'
 ]
 
+{ #category : 'accessing' }
+MgTestSelectProvincias >> errors [ 
+
+	^ OrderedCollection new
+]
+
 { #category : 'rendering' }
 MgTestSelectProvincias >> renderContentOn: html [
 

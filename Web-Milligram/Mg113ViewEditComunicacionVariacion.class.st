@@ -22,6 +22,12 @@ Mg113ViewEditComunicacionVariacion >> entidad [
 ]
 
 { #category : 'accessing' }
+Mg113ViewEditComunicacionVariacion >> errors [
+
+	^ OrderedCollection new
+]
+
+{ #category : 'accessing' }
 Mg113ViewEditComunicacionVariacion >> fields [
 
 	^ #( #denominacion #porcentajeTitularidad #valorMercado #valorTransmision

@@ -1,6 +1,9 @@
 Class {
 	#name : 'MgViewBreadcrumbs',
 	#superclass : 'MgAppBase',
+	#instVars : [
+		'models'
+	],
 	#category : 'Web-Milligram-View',
 	#package : 'Web-Milligram',
 	#tag : 'View'
@@ -22,40 +25,53 @@ MgViewBreadcrumbs class >> initialize [
   
 ]
 
+{ #category : 'as yet unclassified' }
+MgViewBreadcrumbs >> createViewModelBanner [
+
+	| title subtitle |
+	title := 'Comunicación de datos relativos a las ganacias patrimoniales por cambio de residencia cuando se produzca a otro estado miembro de la Unión Europea'
+	         ,
+	         ' o del Espacio Económico Europeo con efectivo intercambio de información tributaria'.
+	subtitle := '(Artículo 95 bis de la ley de IRPF)'.
+	^ MgViewModelBanner new
+		  setCode: '113';
+		  setDescription: {
+				  title.
+				  subtitle }
+]
+
 { #category : 'initialization' }
 MgViewBreadcrumbs >> initialize [
 
 	super initialize.
 	idx := 1.
+	"paneles que contienen modelos"
 	panels := OrderedCollection
 		          with: (MgBreadcrumbInfo
-				           withId: 'model-info'
-				           description: 'Modelo 113'
-				           view: (MgViewModelBanner new
-						            setCode: '113';
-						            setDescription:
-							            #( 'Comunicación de datos relativos a las ganacias patrimoniales por cambio de residencia cuando se produzca a otro estado miembro de la Unión Europea o del Espacio Económico Europeo con efectivo intercambio de información tributaria'
-							               '(Artículo 95 bis de la ley de IRPF)' )))
+				           withId: #contribuyente
+				           label: 'Contribuyente'
+				           view: (Mg113ViewIdentificacionContribuyente new addDecoration: (MgDecorationPanelHeader new setData: #('Contribuyente')); yourself))
 		          with: (MgBreadcrumbInfo
-				           withId: 'contribuyente'
-				           description: 'Contribuyente'
-				           view: Mg113ViewIdentificacionContribuyente new)
+				           withId: #representante
+				           label: 'Representante'
+				           view: (Mg113ViewIdentificacionRepresentante new addDecoration:  (MgDecorationPanelHeader new setData: #('Representante del contribuyente, o en su caso, domicilio a efectos de notificaciones en territorio español')); yourself))
 		          with: (MgBreadcrumbInfo
-				           withId: 'representante'
-				           description: 'Representante'
-				           view: Mg113ViewIdentificacionRepresentante new)
+				           withId: #comunicacionOpcion
+				           label: 'Comunicación opción'
+				           view: (Mg113ViewComunicacionOpcion new addDecoration: (MgDecorationPanelHeader new setData: #('Comunicación de la opción por las especialidades previstas en el apartado 6 del articulo 95 bis de la Ley del Impuesto sobre la Renta de las Personas Físicas')); yourself))
 		          with: (MgBreadcrumbInfo
-				           withId: 'comunicacion-opcion'
-				           description: 'Comuniciación opción'
-				           view: Mg113ViewComunicacionOpcion new)
-		          with: (MgBreadcrumbInfo
-				           withId: 'comunicacion-variacion'
-				           description: 'Comunicación variación'
-				           view: Mg113ViewComunicacionVariacion new)
-		          with: (MgBreadcrumbInfo
-				           withId: 'firma-envio'
-				           description: 'Firma y Envío'
-				           view: (Mg113ViewFirmaYEnvio new modelo: '113'))
+				           withId: #comunicacionVariacion
+				           label: 'Comunicación variación'
+				           view: (Mg113ViewComunicacionVariacion new addDecoration: (MgDecorationPanelHeader new setData: #('Comunicación variación de circunstancias')); yourself)).
+				models := panels collect: [ :each | each view model ].
+				panels addFirst: (MgBreadcrumbInfo
+				           withId: #modelInfo
+				           label: 'Modelo 113'
+				           view: (self createViewModelBanner addDecoration: (MgDecorationPanelHeader new setData: #('Información del modelo'  )); yourself)).
+				panels addLast: (MgBreadcrumbInfo
+				           withId: #firmaYEnvio
+				           label: 'Firma y Envío'
+				           view: ((Mg113ViewFirmaYEnvio new modelo: '113'; models: models) addDecoration: (MgDecorationPanelHeader new setData: #('Firma y envío')); yourself)).
 ]
 
 { #category : 'actions' }

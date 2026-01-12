@@ -48,7 +48,7 @@ MgViewModelBanner >> renderContentOn: html [
 					class: 'banner';
 					with: [
 							html text:
-									'Pulse ''siguiente'' para proceder a rellenar el formulario de representación' ].
+									'Pulse ''>'' para proceder a rellenar el formulario de representación' ].
 				html div
 					id: 'related-links';
 					class: 'related-links';

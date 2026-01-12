@@ -97,6 +97,11 @@ Mg319ViewEditProducto >> renderFieldTipoOn: html [
 	html label
 		for: #tipo;
 		with: #tipo capitalized.
+	html select
+		list: Mg319TipoProducto listaProductos ;
+		selected: model tipo;
+		on: #tipo of: model.
+		"
 	html textInput
 		id: #tipo;
 		onChange: (html jQuery ajax
@@ -106,7 +111,7 @@ Mg319ViewEditProducto >> renderFieldTipoOn: html [
 						 s << (html jQuery id: #createProducto) html: [ :r |
 								 self renderFieldSetOn: html ].
 						s << (html jQuery id: #volumen) triggerSelect  ]);
-		value: model tipo
+		value: model tipo"
 ]
 
 { #category : 'rendering' }

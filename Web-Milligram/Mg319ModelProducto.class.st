@@ -87,6 +87,12 @@ Mg319ModelProducto >> tipo [
 ]
 
 { #category : 'accessing' }
+Mg319ModelProducto >> tipo: unProducto319 [
+
+	tipo := unProducto319
+]
+
+{ #category : 'accessing' }
 Mg319ModelProducto >> volumen [
 
 	^ volumen ifNil:  [ volumen := 0.0 ]

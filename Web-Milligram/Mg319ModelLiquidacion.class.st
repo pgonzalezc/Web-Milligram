@@ -27,7 +27,7 @@ Mg319ModelLiquidacion >> cuotaTotal [
 { #category : 'accessing' }
 Mg319ModelLiquidacion >> depositoFiscal [
 
-	^ depositoFiscal
+	^ depositoFiscal ifNil: [ depositoFiscal := '' ]
 ]
 
 { #category : 'accessing' }

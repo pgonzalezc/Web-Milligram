@@ -18,14 +18,21 @@ MgViewIdentificacion >> asAcronim: aSymbol [
 { #category : 'accessing' }
 MgViewIdentificacion >> errors [
 
-	^ OrderedCollection new
+	^ model valida
 ]
 
 { #category : 'initialization' }
 MgViewIdentificacion >> initialize [
 
 	super initialize.
-	model := MgModelIdentificacion new
+	model := MgModelIdentificacion new addCheck: [ :value |
+			         value size = 9
+				         ifTrue: [ "OK" ]
+				         ifFalse: [
+						         MgError
+							         widgetId: #nif
+							         descripcion:
+							         'El NIF debe tener una longitud de 9 caracteres' ] ] for: #nif
 ]
 
 { #category : 'accessing' }
@@ -60,7 +67,7 @@ MgViewIdentificacion >> renderFieldApellidosOn: html [
 MgViewIdentificacion >> renderFieldNifOn: html [
 
 	html label for: #nif; with: (self asAcronim: #nif).
-	html textInput id: #nif; on: #nif of: model
+	html textInput id: #nif; maxLength: 9; on: #nif of: model
 ]
 
 { #category : 'rendering' }

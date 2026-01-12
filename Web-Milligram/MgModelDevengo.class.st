@@ -12,11 +12,11 @@ Class {
 { #category : 'accessing' }
 MgModelDevengo >> ejercicio [
 
-	^ ejercicio
+	^ ejercicio ifNil: [ ejercicio := DateAndTime now year ]
 ]
 
 { #category : 'accessing' }
 MgModelDevengo >> ejercicio: anInteger [
 
-	ejercicio := anInteger
+	ejercicio := anInteger asInteger
 ]

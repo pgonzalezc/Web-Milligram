@@ -12,12 +12,30 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+MgBreadcrumbInfo class >> withId: aSymbolOrString label: aString title: aTitleString subtitle: aSubtitleString view: aWAComponent [
+
+	^ self basicNew
+		setId: aSymbolOrString ;
+		setLabel: aString ;
+		setView: (aWAComponent addDecoration: (MgDecorationPanelHeader new setData: { aTitleString . aSubtitleString }); yourself)
+]
+
+{ #category : 'as yet unclassified' }
+MgBreadcrumbInfo class >> withId: aSymbolOrString label: aString title: anotherString view: aWAComponent [
+
+	^ self basicNew
+		setId: aSymbolOrString ;
+		setLabel: aString ;
+		setView: (aWAComponent addDecoration: (MgDecorationPanelHeader new setData: { anotherString }); yourself)
+]
+
+{ #category : 'as yet unclassified' }
 MgBreadcrumbInfo class >> withId: aSymbolOrString label: aString view: aWAComponent [
 
 	^ self basicNew
 		setId: aSymbolOrString ;
 		setLabel: aString ;
-		setView: aWAComponent
+		setView: (aWAComponent addDecoration: (MgDecorationPanelHeader new setData: { aString }); yourself)
 ]
 
 { #category : 'accessing' }

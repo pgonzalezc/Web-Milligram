@@ -28,11 +28,11 @@ MgViewM319 >> cargarProductosPrueba [
 	"Inicializamos algunos productos en el modelo de la vista de liquidacion"
 
 	(panels at: 4) view model addProducto: (Mg319ModelProducto
-			 withTipo: 'Gasolina'
+			 withTipo: (Mg319TipoProducto listaProductos second)
 			 volumen: 123.23
 			 precioLitro: 1.2343).
 	(panels at: 4) view model addProducto: (Mg319ModelProducto
-			 withTipo: 'Keroseno'
+			 withTipo: (Mg319TipoProducto listaProductos fifth)
 			 volumen: 1234.43
 			 precioLitro: 1.1256)
 ]
@@ -57,53 +57,36 @@ MgViewM319 >> initialize [
 		          with: (MgBreadcrumbInfo
 				           withId: #identificacion
 				           label: 'Identificación'
-				           view: (MgViewIdentificacion new
-						            addDecoration:
-							            (MgDecorationPanelHeader new setData:
-									             #( 'Identificación ' ));
-						            yourself))
+				           view: MgViewIdentificacion new)
 		          with: (MgBreadcrumbInfo
 				           withId: #devengo
 				           label: 'Devengo'
-				           view: (MgViewDevengo new
-						            addDecoration:
-							            (MgDecorationPanelHeader new setData:
-									             #( 'Devengo ' ));
-						            yourself))
+				           view: MgViewDevengo new)
 		          with: (MgBreadcrumbInfo
 				           withId: #liquidacion
 				           label: 'Liquidación'
-				           view: (Mg319ViewLiquidacion new
-						            addDecoration:
-							            (MgDecorationPanelHeader new setData:
-									             #( 'Liquidación ' ));
-						            yourself))
+				           view: Mg319ViewLiquidacion new)
 		          with: (MgBreadcrumbInfo
 				           withId: #tributacionTerritorial
 				           label: 'Tributación territorial'
-				           view: (Mg319ViewGridTributacionTerritorial new
-						            addDecoration:
-							            (MgDecorationPanelHeader new setData:
-									             #( 'Información de la tributacion por razón de territorio'
-									                '(sólo para sujetos pasivos que tributan en varias administraciones )' ));
-						            yourself)).
+				           title:
+				           'Información de la tributacion por razón de territorio'
+				           subtitle:
+				           '(sólo para sujetos pasivos que tributan en varias administraciones )'
+				           view: Mg319ViewGridTributacionTerritorial new).
 	models := panels collect: [ :panel | panel view model ].
 	"Panel informativo"
 	panels addFirst: (MgBreadcrumbInfo
 			 withId: #modelInfo
 			 label: 'Info del modelo'
-			 view: (self createViewModelBanner
-					  addDecoration:
-						  (MgDecorationPanelHeader new setData: #( 'Modelo 319' ));
-					  yourself)).
+			 title: 'Modelo 319'
+			 view: self createViewModelBanner).
 	"Panel de resumen"
 	panels add: (MgBreadcrumbInfo
 			 withId: #resumenYEnvio
 			 label: 'Resúmen y envío'
-			 view: ((Mg319ViewResumen new models: models)
-					  addDecoration: (MgDecorationPanelHeader new setData:
-								   #( 'Resumen de la declaración y envío' ));
-					  yourself)).
+			 title: 'Resumen de la declaración y envío'
+			 view: (Mg319ViewResumen new models: models)).
 	"announcements"
 	(panels at: 4) view model informChangeOnResultadoTo:
 		(panels at: 5) view model.

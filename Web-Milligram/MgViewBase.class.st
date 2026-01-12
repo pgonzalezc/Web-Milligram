@@ -41,7 +41,7 @@ MgViewBase class >> resetLoggers [
 { #category : 'accessing' }
 MgViewBase >> errors [
 
-	self subclassResponsibility 
+	^ OrderedCollection new
 ]
 
 { #category : 'as yet unclassified' }
@@ -60,6 +60,12 @@ MgViewBase >> milligramJsLibs [
 ]
 
 { #category : 'accessing' }
+MgViewBase >> model [
+
+	^ nil
+]
+
+{ #category : 'accessing' }
 MgViewBase >> ppImp: unImporte [ 
 	^ self class ppImp: unImporte 
 ]
@@ -71,23 +77,11 @@ MgViewBase >> ppPorc: aNumber precision: anInteger [
 ]
 
 { #category : 'rendering' }
-MgViewBase >> renderCabeceraErroresOn: html [
+MgViewBase >> renderContentOn: html [
 
 	html div
-		class: 'row';
-		with: [
-				html div
-					class: 'column';
-					with: [ html strong id: 'title-cabecera-errores'; with: 'Corrija los siguientes errores:' ].
-				html div
-					class: 'column';
-					with: [
-							html div class: 'float-right'; with: [ 
-							html anchor
-								class: 'button button-clear';
-								style: 'font-size: larger; margin: 0; padding: 0';
-								onClick: (html jQuery id: 'error-container') hide;
-								with: 'X' ] ] ]
+		class: 'banner';
+		with: [ html text: 'Not Implemented yet.....' ]
 ]
 
 { #category : 'rendering' }
@@ -120,19 +114,6 @@ MgViewBase >> renderLinkToUrl: anUrl withText: aString on: html [
 	html space.
 	html anchor
 		url: anUrl;
-		with: [
-				html image
-					url: '/static-files/img/external-link-symbolic.svg';
-					width: 13;
-					height: 13 ]
-]
-
-{ #category : 'rendering' }
-MgViewBase >> renderLinkToWidget: aWidgetId on: html [
-
-	html anchor
-		url: 'javascript:void(0);';
-		onClick: (html jQuery id: aWidgetId) triggerSelect scrollTop;
 		with: [
 				html image
 					url: '/static-files/img/external-link-symbolic.svg';

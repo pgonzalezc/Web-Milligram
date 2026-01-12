@@ -50,28 +50,37 @@ MgViewBreadcrumbs >> initialize [
 		          with: (MgBreadcrumbInfo
 				           withId: #contribuyente
 				           label: 'Contribuyente'
-				           view: (Mg113ViewIdentificacionContribuyente new addDecoration: (MgDecorationPanelHeader new setData: #('Contribuyente')); yourself))
+				           view: Mg113ViewIdentificacionContribuyente new)
 		          with: (MgBreadcrumbInfo
 				           withId: #representante
 				           label: 'Representante'
-				           view: (Mg113ViewIdentificacionRepresentante new addDecoration:  (MgDecorationPanelHeader new setData: #('Representante del contribuyente, o en su caso, domicilio a efectos de notificaciones en territorio español')); yourself))
+				           title:
+				           'Representante del contribuyente, o en su caso, domicilio a efectos de notificaciones en territorio español'
+				           view: Mg113ViewIdentificacionRepresentante new)
 		          with: (MgBreadcrumbInfo
 				           withId: #comunicacionOpcion
 				           label: 'Comunicación opción'
-				           view: (Mg113ViewComunicacionOpcion new addDecoration: (MgDecorationPanelHeader new setData: #('Comunicación de la opción por las especialidades previstas en el apartado 6 del articulo 95 bis de la Ley del Impuesto sobre la Renta de las Personas Físicas')); yourself))
+				           title:
+				           'Comunicación de la opción por las especialidades previstas en el apartado 6 del articulo 95 bis de la Ley del Impuesto sobre la Renta de las Personas Físicas'
+				           view: Mg113ViewComunicacionOpcion new)
 		          with: (MgBreadcrumbInfo
 				           withId: #comunicacionVariacion
 				           label: 'Comunicación variación'
-				           view: (Mg113ViewComunicacionVariacion new addDecoration: (MgDecorationPanelHeader new setData: #('Comunicación variación de circunstancias')); yourself)).
-				models := panels collect: [ :each | each view model ].
-				panels addFirst: (MgBreadcrumbInfo
-				           withId: #modelInfo
-				           label: 'Modelo 113'
-				           view: (self createViewModelBanner addDecoration: (MgDecorationPanelHeader new setData: #('Información del modelo'  )); yourself)).
-				panels addLast: (MgBreadcrumbInfo
-				           withId: #firmaYEnvio
-				           label: 'Firma y Envío'
-				           view: ((Mg113ViewFirmaYEnvio new modelo: '113'; models: models) addDecoration: (MgDecorationPanelHeader new setData: #('Firma y envío')); yourself)).
+				           title: 'Comunicación variación de circunstancias'
+				           view: Mg113ViewComunicacionVariacion new).
+	models := panels collect: [ :each | each view model ].
+	panels addFirst: (MgBreadcrumbInfo
+			 withId: #modelInfo
+			 label: 'Modelo 113'
+			 title: 'Información del modelo'
+			 view: self createViewModelBanner).
+	panels addLast: (MgBreadcrumbInfo
+			 withId: #firmaYEnvio
+			 label: 'Firma y Envío'
+			 title: 'Firma y envío'
+			 view: (Mg113ViewFirmaYEnvio new
+					  modelo: '113';
+					  models: models))
 ]
 
 { #category : 'actions' }

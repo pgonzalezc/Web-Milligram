@@ -47,7 +47,7 @@ MgAppBase >> previous [
 MgAppBase >> renderAuthenticationUserOn: html [
 
 	html div class: 'float-right'; with: [ 
-		html text: self session authenticatedUser subject commonName
+		html small: self session authenticatedUser subject commonName
 		 ]
 ]
 
@@ -135,6 +135,26 @@ MgAppBase >> renderButtonPreviousOn: html [
 ]
 
 { #category : 'rendering' }
+MgAppBase >> renderCabeceraErroresOn: html [
+
+	html div
+		class: 'row';
+		with: [
+				html div
+					class: 'column';
+					with: [ html strong id: 'title-cabecera-errores'; with: 'Corrija los siguientes errores:' ].
+				html div
+					class: 'column';
+					with: [
+							html div class: 'float-right'; with: [ 
+							html anchor
+								class: 'button button-clear';
+								style: 'font-size: larger; margin: 0; padding: 0';
+								onClick: (html jQuery id: 'error-container') hide;
+								with: 'X' ] ] ]
+]
+
+{ #category : 'rendering' }
 MgAppBase >> renderContentOn: html [
 
 	self renderAuthenticationUserOn: html.
@@ -179,6 +199,19 @@ MgAppBase >> renderErrorsOn: html [
 													html space.
 													self renderLinkToWidget: each widgetId on: html ] ] ] ].
 	errors removeAll
+]
+
+{ #category : 'rendering' }
+MgAppBase >> renderLinkToWidget: aWidgetId on: html [
+
+	html anchor
+		url: 'javascript:void(0);';
+		onClick: (html jQuery id: aWidgetId) triggerSelect scrollTop;
+		with: [
+				html image
+					url: '/static-files/img/external-link-symbolic.svg';
+					width: 13;
+					height: 13 ]
 ]
 
 { #category : 'hooks' }

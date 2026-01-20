@@ -28,7 +28,7 @@ Mg319ViewLiquidacion >> errors [
 Mg319ViewLiquidacion >> initialize [ 
 
 	super initialize.
-	model := Mg319ModelLiquidacion new.
+	model := Mg319ModelLiquidacion new 
 ]
 
 { #category : 'accessing' }

@@ -38,42 +38,45 @@ MgViewM796 >> initialize [
 	super initialize.
 	idx := 1.
 	"Paneles que contienen modelos"
-	panels := OrderedCollection
-		          with: (MgBreadcrumbInfo
-				           withId: #identificacion
-				           label: 'Identificación'
-				           view: (MgViewIdentificacion new addDecoration: Mg796DecorationIdentificacion new; yourself))
-		          with: (MgBreadcrumbInfo
-				           withId: #devengo
-				           label: 'Devengo'
-				           view: MgViewDevengo new)
-		          with: (MgBreadcrumbInfo
-				           withId: #liquidacion
-				           label: 'Liquidación'
-				           view: MgViewBase new)
-		          with: (MgBreadcrumbInfo
-				           withId: #resultado
-				           label: 'Resultado'
-				           title: 'Resultado del pago anticipado'
-				           view: MgViewBase new)
-		          with: (MgBreadcrumbInfo
-				           withId: #complementaria
-				           label: 'Complementaria'
-				           view: MgViewBase new).
+	panels := OrderedCollection new.
+	panels add: (MgBreadcrumbInfo
+			 withId: #'bc-identificacion'
+			 label: 'Identificación'
+			 view: (MgViewIdentificacion new
+					  addDecoration: Mg796DecorationIdentificacion new;
+					  yourself)).
+	panels add: (MgBreadcrumbInfo
+			 withId: #'bc-devengo'
+			 label: 'Devengo'
+			 view: MgViewDevengo new).
+	panels add: (MgBreadcrumbInfo
+			 withId: #'bc-liquidacion'
+			 label: 'Liquidación'
+			 view: Mg796ViewLiquidacion new).
+	panels add: (MgBreadcrumbInfo
+			 withId: #'bc-resultado'
+			 label: 'Resultado'
+			 title: 'Resultado del pago anticipado'
+			 view: (Mg796ViewResultado withModel: panels third view model)).
+	panels add: (MgBreadcrumbInfo
+			 withId: #'bc-complementaria'
+			 label: 'Complementaria'
+			 view: MgViewComplementaria new).
 	models := panels collect: [ :panel | panel view model ].
 	"Panel informativo"
 	panels addFirst: (MgBreadcrumbInfo
-			 withId: #modelInfo
+			 withId: #'bc-modelInfo'
 			 label: 'Info del modelo'
 			 title: 'Modelo 796'
-			 view: self createViewModelBanner ).
+			 view: self createViewModelBanner).
 	"Panel de resumen"
 	panels add: (MgBreadcrumbInfo
-			 withId: #resumenYEnvio
+			 withId: #'bc-resumenYEnvio'
 			 label: 'Resúmen y envío'
 			 title: 'Resumen de la declaración y envío'
-			 view: MgViewBase new)
+			 view: MgViewBase new).
 	"Aqui van los announcements"
+	models fifth informChangeOnComplementariaTo: models fourth.
 ]
 
 { #category : 'updating' }
